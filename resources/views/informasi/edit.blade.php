@@ -5,7 +5,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Edit {{ $edit->nama }}</h1>
+                <h1>Edit {{ $informasi->nama }}</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ url('home') }}">Dashboard</a></div>
                     <div class="breadcrumb-item active"><a href="{{ url('informasi') }}">Informasi</a></div>
@@ -32,20 +32,37 @@
                 <div class="row mt-sm-4">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            <form action="/informasi/update/{{ $edit->id }}/" method="POST" enctype="multipart/form-data"
+                            <form action="/informasi/update/{{ $informasi->id }}/" method="POST" enctype="multipart/form-data"
                                 class="needs-validation" novalidate="">
                                 {{ csrf_field() }}
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="form-group col-md-4 col-12">
-                                            <label>Foto</label>
-                                            <input type="file" name="foto" class="form-control"
-                                                value="{{ $edit->foto }}" >
+                                    <label for="kelas_id" class="col-md-3 col-form-label">Kelas</label>
+                                        <div class="col-md-9">
+                                            <select name="kelas_id" id="kelas_id" class="form-control @error('kelas_id') is-invalid @enderror" required>
+                                                <option value="">Pilih Kelas</option>
+                                                @foreach($kelases as $kelas)
+                                                    <option value="{{ $kelas->id }}" {{ $informasi->kelas_id == $kelas->id ? 'selected' : '' }}>
+                                                        {{ $kelas->kelas }} {{ $kelas->nama }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
+                                            @error('kelas_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="form-group col-md-8 col-12">
                                             <label>Isi</label>
                                             <input type="text" name="isi" class="form-control"
-                                                value="{{ $edit->isi }}" placeholder="Nama Aset">
+                                            value="{{ $informasi->isi }}" placeholder="Nama Aset">
+                                        </div>
+                                        <div class="form-group col-md-4 col-12">
+                                            <label>Foto</label>
+                                            <input type="file" name="foto" class="form-control"
+                                                value="{{ $informasi->foto }}" >
                                         </div>
                                     </div>
                                 </div>

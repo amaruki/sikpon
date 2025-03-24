@@ -3,66 +3,100 @@
 namespace App\Http\Controllers;
 
 use App\Models\Informasis;
+use App\Models\Kelas;
+use App\Models\Jadwal_siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InformasiController extends Controller
 {
     public function index()
     {
-        $info = Informasis::get();
-        return view('informasi.index', compact('info'));
+        $kelases = Kelas::all();
+        $user = Auth::user();
+
+        if ($user->role == 'Dev' || $user->role == 'Guru') {
+            $informasis = Informasis::with('kelas')->latest()->get();
+        } elseif ($user->role == 'Siswa') {
+            $jadwalSiswa = Jadwal_siswa::where('siswa_id', $user->siswa_id)
+                ->pluck('kelas_id')
+                ->unique()
+                ->toArray();
+            $informasis = Informasis::whereIn('kelas_id', $jadwalSiswa)
+                ->orWhereNull('kelas_id')
+                ->with('kelas')
+                ->latest()
+                ->get();
+        } else {
+            $informasis = collect(); // Default kosong jika role tidak terdefinisi
+        }
+
+        return view('informasi.index', compact('informasis', 'kelases'));
     }
+
+    public function create()
+    {
+        $kelases = Kelas::all();
+        return view('informasi.create', compact('kelases'));
+    }
+
     public function store(Request $request)
     {
-        $massage = [
-            'required' => ':attribute  wajib di isi !!',
-        ];
-        $this->validate($request, [
-            'foto' => 'required',
-            'isi' => 'required',
-        ], $massage);
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'isi' => 'required|string',
+            'kelas_id' => 'nullable|exists:kelases,id',
+        ]);
+
         $file = $request->file('foto');
-        $nama_file = time() . "_" . $file->getClientOriginalName();
-        $tujuan_upload = 'informasi_foto';
-        $file->move($tujuan_upload, $nama_file);
-        $bayar = new Informasis();
-        $bayar->foto = $nama_file;
-        $bayar->isi = $request->isi;
-        $bayar->save();
-        return redirect('/informasi')->with('notif', 'Data Telah ditambah');
+        $namaFile = time() . "_" . $file->getClientOriginalName();
+        $file->move(public_path('informasi_foto'), $namaFile);
+
+        Informasis::create([
+            'foto' => $namaFile,
+            'isi' => $request->isi,
+            'kelas_id' => $request->kelas_id,
+        ]);
+
+        return redirect('/informasi')->with('success', 'Informasi berhasil ditambahkan.');
     }
-    //
+
     public function edit($id)
     {
-        $edit = Informasis::where('id', $id)->firstOrFail();
-        return view('informasi.edit', compact('edit'));
+        $informasi = Informasis::findOrFail($id);
+        $kelases = Kelas::all();
+        return view('informasi.edit', compact('informasi', 'kelases'));
+        
     }
+
     public function update(Request $request, $id)
     {
-        $edit = Informasis::where('id', $id)->first();
-        $massage = [
-            'required' => ':attribute  wajib di isi !!',
-        ];
+        $request->validate([
+            'isi' => 'required|string',
+            'kelas_id' => 'nullable|exists:kelases,id',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
-        $this->validate($request, [
-            'isi' => 'required',
-        ], $massage);
-        $edit =  \App\Models\Informasis::find($id);
-        $edit->isi =  $request->isi;
-        if ($request->hasfile('foto')) {
+        $informasi = Informasis::findOrFail($id);
+        $informasi->isi = $request->isi;
+        $informasi->kelas_id = $request->kelas_id;
+
+        if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $extension = $file->getClientOriginalName();
-            $nama_file = time() . '.' . $extension;
-            $file->move('informasi_foto', $nama_file);
-            $edit->foto = $nama_file;
+            $namaFile = time() . "_" . $file->getClientOriginalName();
+            $file->move(public_path('informasi_foto'), $namaFile);
+            $informasi->foto = $namaFile;
         }
-        $edit->save();
-        return redirect('/informasi')->with('notif', 'Data Berhasil Diupdate');
+
+        $informasi->save();
+        return redirect('/informasi')->with('success', 'Informasi berhasil diperbarui.');
     }
+
     public function delete($id)
     {
-        $aset = Informasis::where('id', $id)->firstOrFail();
-        $aset->delete();
-        return redirect('informasi')->with('notif', 'Data Berhasil di Hapus');
+        $informasi = Informasis::findOrFail($id);
+        $informasi->delete();
+
+        return redirect('/informasi')->with('success', 'Informasi berhasil dihapus.');
     }
 }

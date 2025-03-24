@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth', 'HakRole:Dev']], function () {
         Route::get('/edit/{id}', [App\Http\Controllers\InformasiController::class, 'edit']);
         Route::post('/update/{id}/', [App\Http\Controllers\InformasiController::class, 'update']);
         Route::get('/delete/{id}', [App\Http\Controllers\InformasiController::class, 'delete']);
+   
     });
     Route::group(['prefix' => 'user'], function () {
         Route::get('/guru', [App\Http\Controllers\UserController::class, 'guru']);

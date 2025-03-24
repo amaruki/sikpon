@@ -66,6 +66,7 @@
             })
             .catch(error => { console.error(error); });
     });
+    
 </script>
 
     <!-- /END GA -->

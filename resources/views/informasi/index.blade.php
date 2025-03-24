@@ -44,27 +44,30 @@
                                             <thead>
                                                 <tr>
                                                     <th width="6%">No</th>
-                                                    <th>Foto</th>
+                                                    <th>Kelas</th>
                                                     <th>Isi</th>
+                                                    <th>Foto</th>
                                                     <th class="text-center">Pilihan</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if ($info->count() == 0)
+                                                @if ($informasis->count() == 0)
                                                     <tr align="center">
                                                         <th colspan="4">Belum Ada Data !!!</th>
                                                     </tr>
                                                 @else
-                                                    @foreach ($info as $item)
+                                                    @foreach ($informasis as $index =>$item)
                                                         <tr>
-                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $index+1 }}</td>
+                                                            <td>{{ ($item->kelas)->nama ?? 'Tidak Ada Kelas' }}</td>
+
+                                                            <td>{{ $item->isi }}</td>
                                                             <td>
                                                                 <a href="{{ url('/informasi_foto/' . $item->foto) }}"
                                                                     target="_blank"><i class="fa fa-file-image"
                                                                         aria-hidden="true"></i> Lihat
                                                                 </a>
                                                             </td>
-                                                            <td>{{ $item->isi }}</td>
                                                             <td nowrap align="center">
                                                                 <a href="/informasi/edit/{{ $item->id }}/"
                                                                     class="btn btn-warning btn-sm">
@@ -104,26 +107,28 @@
                                             <thead>
                                                 <tr>
                                                     <th width="6%">No</th>
-                                                    <th>Foto</th>
+                                                    <th>Kelas</th>
                                                     <th>Isi</th>
+                                                    <th>Foto</th>
                                                     <th class="text-center">Pilihan</th>
                                             </thead>
                                             <tbody>
-                                                @if ($info->count() == 0)
+                                                @if ($informasis->count() == 0)
                                                     <tr align="center">
                                                         <th colspan="4">Belum Ada Data !!!</th>
                                                     </tr>
                                                 @else
-                                                    @foreach ($info as $item)
+                                                    @foreach ($informasis as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ ($item->kelas)->nama ?? 'Tidak Ada Kelas' }}</td>
+                                                            <td>{{ $item->isi }}</td>
                                                             <td>
                                                                 <a href="{{ url('/informasi_foto/' . $item->foto) }}"
                                                                     target="_blank"><i class="fa fa-file-image"
                                                                         aria-hidden="true"></i> Lihat
                                                                 </a>
                                                             </td>
-                                                            <td>{{ $item->isi }}</td>
                                                             <td nowrap align="center">
                                                                 <a href="/informasi/edit/{{ $item->id }}/"
                                                                     class="btn btn-warning btn-sm">
@@ -160,26 +165,26 @@
                                             <thead>
                                                 <tr>
                                                     <th width="6%">No</th>
-                                                    <th>Foto</th>
                                                     <th>Isi</th>
+                                                    <th>Foto</th>
                                                     
                                             </thead>
                                             <tbody>
-                                                @if ($info->count() == 0)
+                                                @if ($informasis->count() == 0)
                                                     <tr align="center">
                                                         <th colspan="4">Belum Ada Data !!!</th>
                                                     </tr>
                                                 @else
-                                                    @foreach ($info as $item)
+                                                    @foreach ($informasis as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $item->isi }}</td>
                                                             <td>
                                                                 <a href="{{ url('/informasi_foto/' . $item->foto) }}"
                                                                     target="_blank"><i class="fa fa-file-image"
                                                                         aria-hidden="true"></i> Lihat
                                                                 </a>
                                                             </td>
-                                                            <td>{{ $item->isi }}</td>
                                                            
                                                         </tr>
                                                     @endforeach
@@ -197,37 +202,44 @@
         </div>
 
     </main>
-    <!-- Modal tambah -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Informasi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <form action="{{ url('/informasi/store') }}" method="POST" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label>Foto</label>
-                            <input type="file" class="form-control" name="foto">
-                        </div>
-                        <div class="form-group mt-3">
-                            <label>Isi</label>
-                            <textarea name="isi" id="" cols="2" rows="2" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group d-flex align-items-center justify-content-between mt-3 mb-0">
-                            <input type="submit" class="btn btn-primary" value="Simpan">
-                        </div>
-                    </form>
-
-                </div>
+    <!-- Modal Tambah Informasi -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Informasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url('/informasi/store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="foto">Foto</label>
+                        <input type="file" class="form-control" name="foto" id="foto" accept="image/*" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="isi">Isi</label>
+                        <textarea name="isi" id="isi" cols="30" rows="3" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="kelas_id">Kelas (Opsional)</label>
+                        <select name="kelas_id" id="kelas_id" class="form-control">
+                            <option value="">-- Pilih Kelas --</option>
+                            @foreach ($kelases as $kelas)
+                                <option value="{{ $kelas->id }}">{{ $kelas->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
     {{-- stop modal --}}
 @endsection
