@@ -9,11 +9,11 @@ return new class extends Migration {
         Schema::create('kurikulums', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('kelas_id')->constrained('kelases')->onDelete('cascade');
-            $table->foreignId('mapel_id')->constrained('mapels')->onDelete('cascade');
-            $table->longText('standar_kompetensi');
-            $table->longText('kompetensi_dasar');        
-            $table->string('jam_pelajaran', 100);
+            $table->unsignedBigInteger('kelas_id')->constrained('kelases')->onDelete('cascade')->nullable();
+            $table->unsignedBigInteger('mapel_id')->constrained('mapels')->onDelete('cascade')->nullable();
+            $table->longText('standar_kompetensi')->nullable();
+            $table->longText('kompetensi_dasar')->nullable();        
+            $table->string('jam_pelajaran', 100)->nullable();
             $table->timestamps();
         });
     }

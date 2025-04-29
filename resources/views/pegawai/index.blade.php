@@ -44,8 +44,8 @@
                                             <thead>
                                                 <tr>
                                                     <th width="6%">No</th>
+                                                    <th>NIK</th>
                                                     <th>Nama</th>
-                                                    <th>NIP</th>
                                                     <th>Jabatan</th>
                                                     <th class="text-center">Pilihan</th>
                                                 </tr>
@@ -59,8 +59,8 @@
                                                     @foreach ($pegawai as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $item->nik ?? '-' }}</td>
                                                             <td>{{ $item->nama }}</td>
-                                                            <td>{{ $item->nip ?? '-' }}</td>
                                                             <td>{{ $item->jabatan ?? '-' }}</td>
                                                             <td nowrap align="center">
                                                                 <a href="/pegawai/edit/{{ $item->uuid }}/"

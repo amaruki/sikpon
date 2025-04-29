@@ -48,6 +48,54 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                         <div class="form-group col-md-6 col-12">
+                                            <label>NIK</label>
+                                            <input type="text" name="nik" class="form-control"
+                                                value="{{ $edit->nik }}" placeholder="Nomor Induk Kependudukan">
+                                        </div>
+                                         <div class="form-group col-md-6 col-12">
+                                            <label>No. HP</label>
+                                            <input type="text" name="no_hp" class="form-control"
+                                                value="{{ $edit->no_hp }}" placeholder="Nomor Handphone">
+                                        </div>
+                                         <div class="form-group col-md-6 col-12">
+                                            <label>Email</label>
+                                            <input type="email" name="email" class="form-control"
+                                                value="{{ $edit->email }}" placeholder="Alamat Email">
+                                        </div>
+                                         <div class="form-group col-md-6 col-12">
+                                            <label>Jenis Kelamin</label>
+                                            <select name="jenis_kelamin" class="form-control">
+                                                <option value="Laki-laki" @if($edit->jenis_kelamin == 'Laki-laki') selected @endif>Laki-laki</option>
+                                                <option value="Perempuan" @if($edit->jenis_kelamin == 'Perempuan') selected @endif>Perempuan</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Tempat Lahir</label>
+                                            <input type="text" name="tempat_lahir" class="form-control"
+                                                value="{{ $edit->tempat_lahir }}" placeholder="Tempat Lahir">
+                                        </div>
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Tanggal Lahir</label>
+                                            <input type="date" name="tanggal_lahir" class="form-control"
+                                                value="{{ $edit->tanggal_lahir }}">
+                                        </div>
+                                         <div class="form-group col-md-6 col-12">
+                                            <label>Agama</label>
+                                            <input type="text" name="agama" class="form-control"
+                                                value="{{ $edit->agama }}" placeholder="Agama">
+                                        </div>
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Golongan Darah</label>
+                                            <input type="text" name="golongan_darah" class="form-control"
+                                                value="{{ $edit->golongan_darah }}" placeholder="Golongan Darah">
+                                        </div>
+                                        <div class="form-group col-md-12 col-12">
+                                            <label>Alamat</label>
+                                            <textarea name="alamat" class="form-control" placeholder="Alamat Lengkap">{{ $edit->alamat }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="form-group col-md-12 col-12">
                                             <label>Jabatan</label>
                                             <select name="jabatan" class="form-control" required="">
