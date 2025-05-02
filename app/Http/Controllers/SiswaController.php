@@ -15,7 +15,9 @@ class SiswaController extends Controller
     public function index()
     {
         $siswa = Siswa::get();
-        return view('siswa.index', compact('siswa'));
+        $kelas = Kelas::orderBy('kelas', 'asc')->get();
+
+        return view('siswa.index', compact('siswa', 'kelas'));
     }
     public function store(Request $request)
     {
@@ -29,8 +31,7 @@ class SiswaController extends Controller
             'tempat' => 'required',
             'ttl' => 'required',
             'alamat' => 'required',
-            'nis' => 'required',
-            'hp' => 'required',
+            'kelas_id' => 'required',
         ], $massage);
 
         Siswa::create([
@@ -39,15 +40,17 @@ class SiswaController extends Controller
             'tempat' => $request->tempat,
             'ttl' => $request->ttl,
             'alamat' => $request->alamat,
-            'nis' => $request->nis,
+            'nisn' => $request->nisn,
             'hp' => $request->hp,
+            'kelas_id' => $request->kelas_id,
         ]);
         return redirect('siswa')->with('notif', 'Data Siswa Berhasi di Tambah');
     }
     public function edit($id)
     {
         $edit = Siswa::where('uuid', $id)->firstOrFail();
-        return view('siswa.edit', compact('edit'));
+        $kelas = Kelas::orderBy('kelas', 'asc')->get();
+        return view('siswa.edit', compact('edit', 'kelas'));
     }
     public function update(Request $request, $id)
     {
@@ -61,8 +64,6 @@ class SiswaController extends Controller
             'tempat' => 'required',
             'ttl' => 'required',
             'alamat' => 'required',
-            'nis' => 'required',
-            'hp' => 'required',
         ], $massage);
         $siswa = Siswa::where('uuid', $id)->firstOrFail();
         $siswa->update($request->all());
@@ -95,7 +96,7 @@ class SiswaController extends Controller
         $data = Nilai::select(
             'nilais.*',
             'siswas.nama as nama_siswa',
-            'siswas.nis as nisn',
+            'siswas.nisn as nisn',
             'mapels.nama as nama_mapel',
         )
             ->leftJoin('siswas', 'siswas.id', '=', 'nilais.siswa_id')

@@ -61,6 +61,9 @@
                                                             <td>{{ $item->pegawai->nama }}</td>
                                                             <th>{{ $item->username }}</th>
                                                             <td nowrap align="center">
+                                                                <a href="/user/edit/{{ $item->uuid }}" class="btn btn-warning btn-sm">
+                                                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                                                </a>
                                                                 <a href="/user/delete/{{ $item->uuid }}/"
                                                                     class="btn btn-danger btn-sm"
                                                                     onclick="return confirm('Anda yakin ingin menghapus ?')">

@@ -130,7 +130,13 @@
                                                 @forelse ($kurikulums as $index => $kurikulum)
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $kurikulum->kelas->nama }}</td>
+                                                        <td>
+                                                            @foreach ($kelas as $kelas)
+                                                                @if ($kelas->id == $kurikulum->kelas_id)
+                                                                    {{ $kelas->kelas }} - {{ $kelas->nama }}
+                                                                @endif
+                                                            @endforeach
+                                                        </td>
                                                         <td>{{ $kurikulum->mapel->nama }}</td>
                                                         <td>{!! $kurikulum->standar_kompetensi !!}</td>
                                                         <td>{!! $kurikulum->kompetensi_dasar !!}</td>
@@ -202,7 +208,7 @@
 
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $kurikulum->kelas->nama }}</td>
+                                                        <td>{{ $kurikulum->kelas->kelas }} - {{ $kurikulum->kelas->nama }}</td>
                                                         <td>{{ $kurikulum->mapel->nama }}</td>
                                                         <td>{!! $kurikulum->standar_kompetensi !!}</td>
                                                         <td>{!! $kurikulum->kompetensi_dasar !!}</td>
@@ -246,7 +252,7 @@
                             <select name="kelas_id" class="form-control" required>
                                 <option value="">Pilih Kelas</option>
                                 @foreach ($kelases as $kelas)
-                                    <option value="{{ $kelas->id }}">{{ $kelas->nama }}</option>
+                                    <option value="{{ $kelas->id }}">{{ $kelas->kelas }} - {{ $kelas->nama }}</option>
                                 @endforeach
                             </select>
                         </div>

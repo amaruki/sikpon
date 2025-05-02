@@ -64,12 +64,12 @@ class UserController extends Controller
     }
 
     // Profil
-    public function profil_edit($id)
+    public function edit($id)
     {
         $profil = User::where('uuid', $id)->firstOrFail();
         return view('profil.edit', compact('profil'));
     }
-    public function profil_update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $massage = [
             'required' => ':attribute  wajib di isi !!',
