@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>SIAKAD</title>
+    <title>SIKPON</title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ url('update/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -122,10 +122,10 @@
                         <div class="main-sidebar sidebar-style-2">
                             <aside id="sidebar-wrapper">
                                 <div class="sidebar-brand">
-                                    <a href="">SIAKAD</a>
+                                    <a href="">SIKPON</a>
                                 </div>
                                 <div class="sidebar-brand sidebar-brand-sm">
-                                    <a href="">SIAKAD</a>
+                                    <a href="">SIKPON</a>
                                 </div>
                                 <ul class="sidebar-menu">
                                     <li class="menu-header">Dashboard</li>
@@ -137,7 +137,7 @@
                                         <a href="{{ url('profil', []) }}" class="nav-link"><i class="far fa-user"></i>
                                             <span>Profil</span></a>
                                     </li> --}}
-                                    <li class="menu-header">Data Siakad</li>
+                                    <li class="menu-header">Data SIKPON</li>
                                     <li class="@if (Request::segment(1) == 'jadwal') dropdown active @endif"><a
                                             class="nav-link" href="{{ url('jadwal', []) }}"><i class="fas fa-book"></i>
                                             <span>Jadwal</span></a></li>
@@ -204,10 +204,10 @@
                         <div class="main-sidebar sidebar-style-2">
                             <aside id="sidebar-wrapper">
                                 <div class="sidebar-brand">
-                                    <a href="">SIAKAD</a>
+                                    <a href="">SIKPON</a>
                                 </div>
                                 <div class="sidebar-brand sidebar-brand-sm">
-                                    <a href="">SIAKAD</a>
+                                    <a href="">SIKPON</a>
                                 </div>
                                 <ul class="sidebar-menu">
                                     <li class="menu-header">Dashboard</li>
@@ -254,10 +254,10 @@
                         <div class="main-sidebar sidebar-style-2">
                             <aside id="sidebar-wrapper">
                                 <div class="sidebar-brand">
-                                    <a href="">SIAKAD</a>
+                                    <a href="">SIKPON</a>
                                 </div>
                                 <div class="sidebar-brand sidebar-brand-sm">
-                                    <a href="">SIAKAD</a>
+                                    <a href="">SIKPON</a>
                                 </div>
                                 <ul class="sidebar-menu">
                                     <li class="menu-header">Dashboard</li>
