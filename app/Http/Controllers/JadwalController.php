@@ -44,6 +44,9 @@ class JadwalController extends Controller
 
     public function store_siswa(Request $request)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $massage = [
             'required' => ':attribute  wajib di isi !!',
         ];
@@ -66,6 +69,9 @@ class JadwalController extends Controller
 
     public function store(Request $request)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $massage = [
             'required' => ':attribute  wajib di isi !!',
         ];
@@ -102,6 +108,9 @@ class JadwalController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $massage = [
             'required' => ':attribute  wajib di isi !!',
         ];
@@ -126,12 +135,18 @@ class JadwalController extends Controller
     }
     public function delete($id)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $jadwal = Jadwal::where('id', $id)->firstOrFail();
         $jadwal->delete();
         return redirect('jadwal')->with('notif', 'Data Berhasil di Hapus');
     }
     public function delete_Siswa($id)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $siswa = Jadwal_siswa::where('id', $id)->firstOrFail();
         $siswa->delete();
         return redirect()->back()->with('notif', 'Data Berhasil di Hapus');

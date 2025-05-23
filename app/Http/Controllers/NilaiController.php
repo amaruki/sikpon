@@ -49,6 +49,9 @@ class NilaiController extends Controller
     }
     public function detail($id)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Halaman ini tidak ditujukan untuk Siswa/Wali Murid.');
+        }
         $siswa = Siswa::get();
         $detail = Jadwal::with('jadwal_siswa')->where('id', $id)->firstOrFail();
         return view('nilai.all-siswa', compact('detail', 'siswa'));
@@ -65,6 +68,9 @@ class NilaiController extends Controller
     //
     public function store(Request $request)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $massage = [
             'required' => ':attribute  wajib di isi !!',
         ];
@@ -97,6 +103,9 @@ class NilaiController extends Controller
     }
     public function update(Request $request, $id)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $massage = [
             'required' => ':attribute  wajib di isi !!',
         ];
@@ -111,6 +120,9 @@ class NilaiController extends Controller
 
     public function delete($id)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $nl = Nilai::where('uuid', $id)->firstOrFail();
         $nl->delete();
         return redirect('nilai')->with('notif', 'Data Nilai Berhasil di Hapus');
