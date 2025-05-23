@@ -12,6 +12,12 @@
   ];
   # Sets environment variables in the workspace
   env = {};
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+    # package = pkgs.mysql80; # For MySQL 8.0
+  };
+
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [

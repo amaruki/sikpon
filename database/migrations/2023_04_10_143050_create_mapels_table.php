@@ -16,15 +16,11 @@ class CreateMapelsTable extends Migration
         Schema::create('mapels', function (Blueprint $table) {
             $table->id();
             $table->string('uuid', 36);
-            $table->integer('user_id');
-            $table->integer('guru_id');
-            $table->integer('siswa_id');
             $table->string('nama');
-            $table->string('nilai');
-            $table->timestamps();
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
-
     /**
      * Reverse the migrations.
      *
