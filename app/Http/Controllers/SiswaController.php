@@ -92,6 +92,9 @@ class SiswaController extends Controller
     }
     public function siswa_saya_detail($id)
     {
+        if (\Auth::user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Halaman ini tidak ditujukan untuk Siswa/Wali Murid.');
+        }
         $kelas = Kelas::with('nilai')->where('pegawai_id', \Auth::user()->pegawai_id)->where('id', $id)->firstOrFail();
         $data = Nilai::select(
             'nilais.*',

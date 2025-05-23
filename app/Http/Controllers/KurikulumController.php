@@ -35,6 +35,9 @@ class KurikulumController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $request->validate([
             'kelas_id' => 'required|exists:kelases,id',
             'mapel_id' => 'required|exists:mapels,id',
@@ -59,6 +62,9 @@ class KurikulumController extends Controller
 
     public function update(Request $request, $id) // Ubah parameter dari Kurikulum $kurikulum menjadi $id
     {
+        if (auth()->user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $request->validate([
             'kelas_id' => 'required|exists:kelases,id',
             'mapel_id' => 'required|exists:mapels,id',
@@ -75,6 +81,9 @@ class KurikulumController extends Controller
 
     public function delete($id) // Ubah dari delete() ke destroy()
     {
+        if (auth()->user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $kurikulum = Kurikulum::findOrFail($id);
         $kurikulum->delete();
 

@@ -42,6 +42,9 @@ class InformasiController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $request->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'isi' => 'required|string',
@@ -71,6 +74,9 @@ class InformasiController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (auth()->user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $request->validate([
             'isi' => 'required|string',
             'kelas_id' => 'nullable|exists:kelases,id',
@@ -94,6 +100,9 @@ class InformasiController extends Controller
 
     public function delete($id)
     {
+        if (auth()->user()->role == 'Siswa') {
+            abort(403, 'Akses ditolak. Siswa tidak dapat melakukan tindakan ini.');
+        }
         $informasi = Informasis::findOrFail($id);
         $informasi->delete();
 
