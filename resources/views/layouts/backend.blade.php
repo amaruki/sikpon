@@ -139,8 +139,11 @@
                                     </li> --}}
                                     <li class="menu-header">Data SIKPON</li>
                                     <li class="@if (Request::segment(1) == 'jadwal') dropdown active @endif"><a
-                                            class="nav-link" href="{{ url('jadwal', []) }}"><i class="fas fa-book"></i>
+                                            class="nav-link" href="{{ url('jadwal', []) }}"><i class="fas fa-calendar"></i>
                                             <span>Jadwal</span></a></li>
+                                    <li class="@if (Request::segment(1) == 'jurnal') dropdown active @endif"><a
+                                            class="nav-link" href="{{ route('jurnal.index') }}"><i class="fas fa-book-open"></i>
+                                            <span>Jurnal Pembelajaran</span></a></li>
                                     <li class="menu-header">Data Master</li>
                                     <li class="@if (Request::segment(1) == 'pegawai') dropdown active @endif">
                                         <a href="{{ url('pegawai', []) }}"><i class="fas fa-user-circle  "></i>
@@ -218,7 +221,12 @@
                                     <li class="menu-header">Data Master</li>
                                     <li class="@if (Request::segment(1) == 'jadwal') dropdown active @endif">
                                         <a class="nav-link" href="{{ url('jadwal', []) }}">
-                                            <i class="fas fa-book"></i> <span>Jadwal</span>
+                                            <i class="fas fa-calendar"></i> <span>Jadwal</span>
+                                        </a>
+                                    </li>
+                                    <li class="@if (Request::segment(1) == 'jurnal') dropdown active @endif">
+                                        <a class="nav-link" href="{{ route('jurnal.index') }}">
+                                            <i class="fas fa-book-open"></i> <span>Jurnal Pembelajaran</span>
                                         </a>
                                     </li>
                                     <li class="@if (Request::segment(1) == 'nilai') dropdown active @endif">
@@ -268,14 +276,18 @@
                                     <li class="menu-header">Data Master</li>
                                     <li class="@if (Request::segment(1) == 'jadwal') dropdown active @endif">
                                         <a class="nav-link" href="{{ url('jadwal', []) }}">
-                                            <i class="fas fa-book"></i> <span>Jadwal</span>
+                                            <i class="fas fa-calendar"></i> <span>Jadwal</span>
+                                        </a>
+                                    </li>
+                                    <li class="@if (Request::segment(1) == 'jurnal') dropdown active @endif">
+                                        <a class="nav-link" href="{{ route('jurnal.index') }}">
+                                            <i class="fas fa-book-open"></i> <span>Jurnal Pembelajaran</span>
                                         </a>
                                     </li>
                                     <li class="@if (Request::segment(1) == 'nilai/saya') dropdown active @endif">
                                         <a class="nav-link" href="{{ url('nilai/saya', []) }}">
                                             <i class="fas fa-percent"></i> <span>Nilai</span>
                                         </a>
-
                                     </li>
                                     <li class="@if (Request::segment(1) == 'kurikulum') dropdown active @endif">
                                         <a href="{{ url('kurikulum', []) }}"><i class="fas fa-book"></i>

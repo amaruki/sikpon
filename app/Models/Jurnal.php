@@ -17,7 +17,7 @@ class Jurnal extends Model
         'kode_jurnal',
         'tanggal',
         'guru_id',
-        'mata_pelajaran_id',
+        'mapel_id',
         'kelas_id',
         'materi_pokok',
         'kegiatan_pembelajaran',
@@ -88,11 +88,11 @@ class Jurnal extends Model
     }
 
     /**
-     * Relasi dengan Mata Pelajaran
+     * Relasi dengan Mapel
      */
-    public function mataPelajaran(): BelongsTo
+    public function mapel(): BelongsTo
     {
-        return $this->belongsTo(MataPelajaran::class, 'mata_pelajaran_id');
+        return $this->belongsTo(Mapel::class, 'mapel_id');
     }
 
     /**
@@ -158,9 +158,9 @@ class Jurnal extends Model
     /**
      * Scope untuk filter berdasarkan mata pelajaran
      */
-    public function scopeByMataPelajaran($query, $mataPelajaranId)
+    public function scopeByMapel($query, $mapelId)
     {
-        return $query->where('mata_pelajaran_id', $mataPelajaranId);
+        return $query->where('mapel_id', $mapelId);
     }
 
     /**

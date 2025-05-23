@@ -149,5 +149,14 @@ Route::group(['middleware' => ['auth', 'HakRole:Guru,Dev,Siswa']], function () {
         Route::get('/export-pdf', [KurikulumController::class, 'exportPDF'])->name('kurikulum.export-pdf');
         Route::get('/kurikulum/export-pdf/{id}', [KurikulumController::class, 'exportPDFById'])->name('kurikulum.export-pdf.id');
     });
+    Route::group(['prefix' => 'jurnal'], function () {
+        Route::get('/', [App\Http\Controllers\JurnalController::class, 'index'])->name('jurnal.index');
+        Route::get('/create', [App\Http\Controllers\JurnalController::class, 'create'])->name('jurnal.create');
+        Route::post('/store', [App\Http\Controllers\JurnalController::class, 'store'])->name('jurnal.store');
+        Route::get('/{jurnal}', [App\Http\Controllers\JurnalController::class, 'show'])->name('jurnal.show');
+        Route::get('/{jurnal}/edit', [App\Http\Controllers\JurnalController::class, 'edit'])->name('jurnal.edit');
+        Route::put('/{jurnal}', [App\Http\Controllers\JurnalController::class, 'update'])->name('jurnal.update');
+        Route::delete('/{jurnal}', [App\Http\Controllers\JurnalController::class, 'destroy'])->name('jurnal.destroy');
+    });
 
 });

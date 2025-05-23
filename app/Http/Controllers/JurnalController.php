@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jurnal;
 use App\Models\User;
-use App\Models\MataPelajaran;
+use App\Models\Mapel;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,7 @@ class JurnalController extends Controller
         $user = Auth::user();
         
         // Query dasar berdasarkan role
-        $query = Jurnal::with(['guru', 'mataPelajaran', 'kelas']);
+        $query = Jurnal::with(['guru', 'mapel', 'kelas']);
         
         // Filter berdasarkan role
         if ($user->role === 'guru') {
@@ -52,8 +52,8 @@ class JurnalController extends Controller
             $query->byDateRange($request->tanggal_mulai, $request->tanggal_selesai);
         }
         
-        if ($request->filled('mata_pelajaran_id')) {
-            $query->byMataPelajaran($request->mata_pelajaran_id);
+        if ($request->filled('mapel_id')) {
+            $query->byMapel($request->mapel_id);
         }
         
         if ($request->filled('kelas_id')) {
@@ -88,11 +88,11 @@ class JurnalController extends Controller
                        ->paginate(15);
         
         // Data untuk filter dropdown
-        $mataPelajaran = MataPelajaran::active()->get();
+        $mapel = Mapel::active()->get();
         $kelas = Kelas::active()->get();
         $guru = $user->role === 'admin' ? User::guru()->get() : collect();
         
-        return view('jurnal.index', compact('jurnal', 'mataPelajaran', 'kelas', 'guru'));
+        return view('jurnal.index', compact('jurnal', 'mapel', 'kelas', 'guru'));
     }
 
     /**
@@ -130,7 +130,7 @@ class JurnalController extends Controller
         $validator = Validator::make($request->all(), [
             'tanggal' => 'required|date',
             'guru_id' => 'required|exists:users,id',
-            'mata_pelajaran_id' => 'required|exists:mata_pelajarans,id',
+            'mapel_id' => 'required|exists:mapels,id',
             'kelas_id' => 'required|exists:kelas,id',
             'materi_pokok' => 'required|string|max:255',
             'kegiatan_pembelajaran' => 'required|string',
@@ -169,7 +169,7 @@ class JurnalController extends Controller
             $jurnal = Jurnal::create([
                 'tanggal' => $request->tanggal,
                 'guru_id' => $request->guru_id,
-                'mata_pelajaran_id' => $request->mata_pelajaran_id,
+                'mapel_id' => $request->mapel_id,
                 'kelas_id' => $request->kelas_id,
                 'materi_pokok' => $request->materi_pokok,
                 'kegiatan_pembelajaran' => $request->kegiatan_pembelajaran,
@@ -277,7 +277,7 @@ class JurnalController extends Controller
         $validator = Validator::make($request->all(), [
             'tanggal' => 'required|date',
             'guru_id' => 'required|exists:users,id',
-            'mata_pelajaran_id' => 'required|exists:mata_pelajarans,id',
+            'mapel_id' => 'required|exists:mapels,id',
             'kelas_id' => 'required|exists:kelas,id',
             'materi_pokok' => 'required|string|max:255',
             'kegiatan_pembelajaran' => 'required|string',
@@ -398,7 +398,7 @@ class JurnalController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk melihat laporan');
         }
         
-        $query = Jurnal::with(['guru', 'mataPelajaran', 'kelas']);
+        $query = Jurnal::with(['guru', 'mapel', 'kelas']);
         
         // Filter berdasarkan role
         if ($user->role === 'guru') {

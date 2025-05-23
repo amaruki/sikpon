@@ -13,7 +13,7 @@ class CreateJurnalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('jurnals', function (Blueprint $table) {
+        Schema::create('jurnal', function (Blueprint $table) {
             $table->id();
             $table->string('kode_jurnal')->unique();
             $table->date('tanggal');
@@ -39,7 +39,7 @@ class CreateJurnalsTable extends Migration
             
             // Indexes untuk performa
             $table->index(['tanggal', 'guru_id']);
-            $table->index(['mata_pelajaran_id', 'kelas_id']);
+            $table->index(['mapel_id', 'kelas_id']);
             $table->index('status_jurnal');
         });
     }
