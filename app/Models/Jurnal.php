@@ -84,7 +84,7 @@ class Jurnal extends Model
      */
     public function guru(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'guru_id');
+        return $this->belongsTo(Pegawai::class, 'guru_id');
     }
 
     /**
@@ -140,6 +140,28 @@ class Jurnal extends Model
     }
 
     /**
+     * Get siswa hadir data
+     */
+    public function getSiswaHadirData()
+    {
+        if (empty($this->siswa_hadir)) {
+            return collect();
+        }
+        return Siswa::whereIn('id', $this->siswa_hadir)->get();
+    }
+
+    /**
+     * Get siswa tidak hadir data
+     */
+    public function getSiswaTidakHadirData()
+    {
+        if (empty($this->siswa_tidak_hadir)) {
+            return collect();
+        }
+        return Siswa::whereIn('id', $this->siswa_tidak_hadir)->get();
+    }
+
+    /**
      * Scope untuk filter berdasarkan guru
      */
     public function scopeByGuru($query, $guruId)
@@ -148,15 +170,7 @@ class Jurnal extends Model
     }
 
     /**
-     * Scope untuk filter berdasarkan tanggal
-     */
-    public function scopeByDateRange($query, $startDate, $endDate)
-    {
-        return $query->whereBetween('tanggal', [$startDate, $endDate]);
-    }
-
-    /**
-     * Scope untuk filter berdasarkan mata pelajaran
+     * Scope untuk filter berdasarkan mapel
      */
     public function scopeByMapel($query, $mapelId)
     {
@@ -172,41 +186,19 @@ class Jurnal extends Model
     }
 
     /**
+     * Scope untuk filter berdasarkan range tanggal
+     */
+    public function scopeByDateRange($query, $start, $end)
+    {
+        return $query->whereBetween('tanggal', [$start, $end]);
+    }
+
+    /**
      * Scope untuk filter berdasarkan status
      */
     public function scopeByStatus($query, $status)
     {
         return $query->where('status_jurnal', $status);
-    }
-
-    /**
-     * Method untuk mendapatkan siswa yang hadir
-     */
-    public function getSiswaHadirData()
-    {
-        if (!$this->siswa_hadir) return collect();
-        
-        return User::whereIn('id', $this->siswa_hadir)
-            ->where('role', 'siswa')
-            ->get();
-    }
-
-    /**
-     * Method untuk mendapatkan siswa yang tidak hadir
-     */
-    public function getSiswaTidakHadirData()
-    {
-        if (!$this->siswa_tidak_hadir) return collect();
-        
-        $siswaIds = array_keys($this->siswa_tidak_hadir);
-        
-        return User::whereIn('id', $siswaIds)
-            ->where('role', 'siswa')
-            ->get()
-            ->map(function ($siswa) {
-                $siswa->keterangan_tidak_hadir = $this->siswa_tidak_hadir[$siswa->id] ?? '';
-                return $siswa;
-            });
     }
 
     /**
