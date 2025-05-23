@@ -22,8 +22,8 @@ class Jurnal extends Model
         'materi_pokok',
         'kegiatan_pembelajaran',
         'evaluasi_pembelajaran',
-        'santri_hadir',
-        'santri_tidak_hadir',
+        'siswa_hadir',
+        'siswa_tidak_hadir',
         'jumlah_hadir',
         'jumlah_tidak_hadir',
         'catatan_khusus',
@@ -38,8 +38,8 @@ class Jurnal extends Model
 
     protected $casts = [
         'tanggal' => 'date',
-        'santri_hadir' => 'array',
-        'santri_tidak_hadir' => 'array',
+        'siswa_hadir' => 'array',
+        'siswa_tidak_hadir' => 'array',
         'jumlah_hadir' => 'integer',
         'jumlah_tidak_hadir' => 'integer'
     ];
@@ -180,32 +180,32 @@ class Jurnal extends Model
     }
 
     /**
-     * Method untuk mendapatkan santri yang hadir
+     * Method untuk mendapatkan siswa yang hadir
      */
-    public function getSantriHadirData()
+    public function getSiswaHadirData()
     {
-        if (!$this->santri_hadir) return collect();
+        if (!$this->siswa_hadir) return collect();
         
-        return User::whereIn('id', $this->santri_hadir)
-            ->where('role', 'santri')
+        return User::whereIn('id', $this->siswa_hadir)
+            ->where('role', 'siswa')
             ->get();
     }
 
     /**
-     * Method untuk mendapatkan santri yang tidak hadir
+     * Method untuk mendapatkan siswa yang tidak hadir
      */
-    public function getSantriTidakHadirData()
+    public function getSiswaTidakHadirData()
     {
-        if (!$this->santri_tidak_hadir) return collect();
+        if (!$this->siswa_tidak_hadir) return collect();
         
-        $santriIds = array_keys($this->santri_tidak_hadir);
+        $siswaIds = array_keys($this->siswa_tidak_hadir);
         
-        return User::whereIn('id', $santriIds)
-            ->where('role', 'santri')
+        return User::whereIn('id', $siswaIds)
+            ->where('role', 'siswa')
             ->get()
-            ->map(function ($santri) {
-                $santri->keterangan_tidak_hadir = $this->santri_tidak_hadir[$santri->id] ?? '';
-                return $santri;
+            ->map(function ($siswa) {
+                $siswa->keterangan_tidak_hadir = $this->siswa_tidak_hadir[$siswa->id] ?? '';
+                return $siswa;
             });
     }
 
@@ -225,12 +225,12 @@ class Jurnal extends Model
         if ($user->role === 'wali_murid') {
             // Wali murid hanya bisa akses jurnal anak mereka
             $anakIds = $user->anak()->pluck('id')->toArray();
-            $santriDiJurnal = array_merge(
-                $this->santri_hadir ?? [],
-                array_keys($this->santri_tidak_hadir ?? [])
+            $siswaDiJurnal = array_merge(
+                $this->siswa_hadir ?? [],
+                array_keys($this->siswa_tidak_hadir ?? [])
             );
             
-            return !empty(array_intersect($anakIds, $santriDiJurnal));
+            return !empty(array_intersect($anakIds, $siswaDiJurnal));
         }
         
         return false;

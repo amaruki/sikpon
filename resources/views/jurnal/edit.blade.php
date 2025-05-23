@@ -160,16 +160,16 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="santri_hadir">Santri Hadir</label>
-                                    <select class="form-control select2 @error('santri_hadir') is-invalid @enderror" 
-                                            id="santri_hadir" name="santri_hadir[]" multiple>
-                                        @foreach($santriKelas as $s)
-                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('santri_hadir', $jurnal->santri_hadir ?? [])) ? 'selected' : '' }}>
+                                    <label for="siswa_hadir">Siswa Hadir</label>
+                                    <select class="form-control select2 @error('siswa_hadir') is-invalid @enderror" 
+                                            id="siswa_hadir" name="siswa_hadir[]" multiple>
+                                        @foreach($siswaKelas as $s)
+                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('siswa_hadir', $jurnal->siswa_hadir ?? [])) ? 'selected' : '' }}>
                                                 {{ $s->nama }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('santri_hadir')
+                                    @error('siswa_hadir')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -177,16 +177,16 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="santri_tidak_hadir">Santri Tidak Hadir</label>
-                                    <select class="form-control select2 @error('santri_tidak_hadir') is-invalid @enderror" 
-                                            id="santri_tidak_hadir" name="santri_tidak_hadir[]" multiple>
-                                        @foreach($santriKelas as $s)
-                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('santri_tidak_hadir', $jurnal->santri_tidak_hadir ?? [])) ? 'selected' : '' }}>
+                                    <label for="siswa_tidak_hadir">Siswa Tidak Hadir</label>
+                                    <select class="form-control select2 @error('siswa_tidak_hadir') is-invalid @enderror" 
+                                            id="siswa_tidak_hadir" name="siswa_tidak_hadir[]" multiple>
+                                        @foreach($siswaKelas as $s)
+                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('siswa_tidak_hadir', $jurnal->siswa_tidak_hadir ?? [])) ? 'selected' : '' }}>
                                                 {{ $s->nama }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('santri_tidak_hadir')
+                                    @error('siswa_tidak_hadir')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -296,36 +296,36 @@ $(function() {
         theme: 'bootstrap4'
     });
     
-    // Prevent selection of same santri in both hadir and tidak hadir
-    $('#santri_hadir').on('change', function() {
+    // Prevent selection of same siswa in both hadir and tidak hadir
+    $('#siswa_hadir').on('change', function() {
         var selectedHadir = $(this).val();
-        $('#santri_tidak_hadir option').prop('disabled', false);
+        $('#siswa_tidak_hadir option').prop('disabled', false);
         if (selectedHadir) {
             selectedHadir.forEach(function(id) {
-                $('#santri_tidak_hadir option[value="' + id + '"]').prop('disabled', true);
+                $('#siswa_tidak_hadir option[value="' + id + '"]').prop('disabled', true);
             });
         }
-        $('#santri_tidak_hadir').select2({
+        $('#siswa_tidak_hadir').select2({
             theme: 'bootstrap4'
         });
     });
     
-    $('#santri_tidak_hadir').on('change', function() {
+    $('#siswa_tidak_hadir').on('change', function() {
         var selectedTidakHadir = $(this).val();
-        $('#santri_hadir option').prop('disabled', false);
+        $('#siswa_hadir option').prop('disabled', false);
         if (selectedTidakHadir) {
             selectedTidakHadir.forEach(function(id) {
-                $('#santri_hadir option[value="' + id + '"]').prop('disabled', true);
+                $('#siswa_hadir option[value="' + id + '"]').prop('disabled', true);
             });
         }
-        $('#santri_hadir').select2({
+        $('#siswa_hadir').select2({
             theme: 'bootstrap4'
         });
     });
     
     // Trigger initial state
-    $('#santri_hadir').trigger('change');
-    $('#santri_tidak_hadir').trigger('change');
+    $('#siswa_hadir').trigger('change');
+    $('#siswa_tidak_hadir').trigger('change');
 });
 </script>
 @endpush

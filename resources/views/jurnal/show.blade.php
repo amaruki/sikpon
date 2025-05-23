@@ -69,12 +69,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Jumlah Santri Hadir</th>
-                                    <td>{{ $jurnal->jumlah_hadir }} Santri</td>
+                                    <th>Jumlah Siswa Hadir</th>
+                                    <td>{{ $jurnal->jumlah_hadir }} Siswa</td>
                                 </tr>
                                 <tr>
-                                    <th>Jumlah Santri Tidak Hadir</th>
-                                    <td>{{ $jurnal->jumlah_tidak_hadir }} Santri</td>
+                                    <th>Jumlah Siswa Tidak Hadir</th>
+                                    <td>{{ $jurnal->jumlah_tidak_hadir }} Siswa</td>
                                 </tr>
                                 <tr>
                                     <th>Pencapaian Target</th>
@@ -115,30 +115,30 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Daftar Santri Hadir</h4>
+                                    <h4 class="card-title">Daftar Siswa Hadir</h4>
                                 </div>
                                 <div class="card-body">
-                                    @if(count($santriHadir) > 0)
+                                    @if(count($siswaHadir) > 0)
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>Nama Santri</th>
+                                                        <th>Nama Siswa</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($santriHadir as $index => $santri)
+                                                    @foreach($siswaHadir as $index => $siswa)
                                                         <tr>
                                                             <td>{{ $index + 1 }}</td>
-                                                            <td>{{ $santri->nama }}</td>
+                                                            <td>{{ $siswa->nama }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                     @else
-                                        <p class="text-muted">Tidak ada data santri hadir</p>
+                                        <p class="text-muted">Tidak ada data siswa hadir</p>
                                     @endif
                                 </div>
                             </div>
@@ -147,30 +147,30 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Daftar Santri Tidak Hadir</h4>
+                                    <h4 class="card-title">Daftar Siswa Tidak Hadir</h4>
                                 </div>
                                 <div class="card-body">
-                                    @if(count($santriTidakHadir) > 0)
+                                    @if(count($siswaTidakHadir) > 0)
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>Nama Santri</th>
+                                                        <th>Nama Siswa</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($santriTidakHadir as $index => $santri)
+                                                    @foreach($siswaTidakHadir as $index => $siswa)
                                                         <tr>
                                                             <td>{{ $index + 1 }}</td>
-                                                            <td>{{ $santri->nama }}</td>
+                                                            <td>{{ $siswa->nama }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                     @else
-                                        <p class="text-muted">Tidak ada data santri tidak hadir</p>
+                                        <p class="text-muted">Tidak ada data siswa tidak hadir</p>
                                     @endif
                                 </div>
                             </div>

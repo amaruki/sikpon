@@ -24,8 +24,8 @@
                 <th>Materi Pokok</th>
                 <th>Kegiatan Pembelajaran</th>
                 <th>Evaluasi Pembelajaran</th>
-                <th>Santri Hadir</th>
-                <th>Santri Tidak Hadir</th>
+                <th>Siswa Hadir</th>
+                <th>Siswa Tidak Hadir</th>
                 <th>Catatan Khusus</th>
                 <th>Kendala Pembelajaran</th>
                 <th>Solusi Kendala</th>
@@ -46,8 +46,8 @@
                     <td>{{ $jurnal->materi_pokok }}</td>
                     <td>{{ $jurnal->kegiatan_pembelajaran }}</td>
                     <td>{{ $jurnal->evaluasi_pembelajaran }}</td>
-                    <td>{{ $jurnal->jumlah_santri_hadir }}</td> {{-- Asumsikan ada field ini --}}
-                    <td>{{ $jurnal->jumlah_santri_tidak_hadir }}</td> {{-- Asumsikan ada field ini --}}
+                    <td>{{ $jurnal->jumlah_siswa_hadir }}</td> {{-- Asumsikan ada field ini --}}
+                    <td>{{ $jurnal->jumlah_siswa_tidak_hadir }}</td> {{-- Asumsikan ada field ini --}}
                     <td>{{ $jurnal->catatan_khusus }}</td>
                     <td>{{ $jurnal->kendala_pembelajaran }}</td>
                     <td>{{ $jurnal->solusi_kendala }}</td>

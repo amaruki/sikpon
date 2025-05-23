@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Jurnal;
 use App\Models\User;
 use App\Models\Mapel;
+use App\Models\Pegawai;
+use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,16 +32,16 @@ class JurnalController extends Controller
         $query = Jurnal::with(['guru', 'mapel', 'kelas']);
         
         // Filter berdasarkan role
-        if ($user->role === 'guru') {
+        if ($user->role === 'Guru') {
             $query->byGuru($user->id);
-        } elseif ($user->role === 'wali_murid') {
+        } elseif ($user->role === 'Siswa') {
             // Wali murid hanya melihat jurnal yang melibatkan anaknya
             $anakIds = $user->anak()->pluck('id')->toArray();
             if (!empty($anakIds)) {
                 $query->where(function($q) use ($anakIds) {
                     foreach ($anakIds as $anakId) {
-                        $q->orWhereJsonContains('santri_hadir', $anakId)
-                          ->orWhereJsonContains('santri_tidak_hadir', $anakId);
+                        $q->orWhereJsonContains('siswa_hadir', $anakId)
+                          ->orWhereJsonContains('siswa_tidak_hadir', $anakId);
                     }
                 });
             } else {
@@ -64,7 +66,7 @@ class JurnalController extends Controller
             $query->byStatus($request->status);
         }
         
-        if ($request->filled('guru_id') && $user->role === 'admin') {
+        if ($request->filled('guru_id') && $user->role === 'Dev') {
             $query->byGuru($request->guru_id);
         }
         
@@ -77,7 +79,7 @@ class JurnalController extends Controller
                   ->orWhereHas('guru', function($subQ) use ($search) {
                       $subQ->where('name', 'LIKE', "%{$search}%");
                   })
-                  ->orWhereHas('mataPelajaran', function($subQ) use ($search) {
+                  ->orWhereHas('mapel', function($subQ) use ($search) {
                       $subQ->where('nama', 'LIKE', "%{$search}%");
                   });
             });
@@ -88,9 +90,9 @@ class JurnalController extends Controller
                        ->paginate(15);
         
         // Data untuk filter dropdown
-        $mapel = Mapel::active()->get();
-        $kelas = Kelas::active()->get();
-        $guru = $user->role === 'admin' ? User::guru()->get() : collect();
+        $mapel = Mapel::get();
+        $kelas = Kelas::get();
+        $guru = $user->role === 'Dev' ? Pegawai::get() : collect();
         
         return view('jurnal.index', compact('jurnal', 'mapel', 'kelas', 'guru'));
     }
@@ -102,16 +104,16 @@ class JurnalController extends Controller
     {
         $user = Auth::user();
         
-        // Hanya admin dan guru yang bisa membuat jurnal
-        if (!in_array($user->role, ['admin', 'guru'])) {
+        // Hanya Dev dan guru yang bisa membuat jurnal
+        if (!in_array($user->role, ['Dev', 'Guru'])) {
             abort(403, 'Anda tidak memiliki akses untuk membuat jurnal');
         }
+        $siswa = Siswa::get();
+        $mapel = Mapel::get();
+        $kelas = Kelas::get();
+        $guru = Pegawai::get();
         
-        $mataPelajaran = MataPelajaran::active()->get();
-        $kelas = Kelas::active()->get();
-        $guru = User::guru()->get();
-        
-        return view('jurnal.create', compact('mataPelajaran', 'kelas', 'guru'));
+        return view('jurnal.create', compact('mapel', 'kelas', 'guru'));
     }
 
     /**
@@ -122,7 +124,7 @@ class JurnalController extends Controller
         $user = Auth::user();
         
         // Validasi akses
-        if (!in_array($user->role, ['admin', 'guru'])) {
+        if (!in_array($user->role, ['Dev', 'Guru'])) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk membuat jurnal');
         }
         
@@ -137,8 +139,8 @@ class JurnalController extends Controller
             'evaluasi_pembelajaran' => 'required|string',
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
-            'santri_hadir' => 'nullable|array',
-            'santri_tidak_hadir' => 'nullable|array',
+            'siswa_hadir' => 'nullable|array',
+            'siswa_tidak_hadir' => 'nullable|array',
             'catatan_khusus' => 'nullable|string',
             'kendala_pembelajaran' => 'nullable|string',
             'solusi_kendala' => 'nullable|string',
@@ -154,7 +156,7 @@ class JurnalController extends Controller
         }
         
         // Guru hanya bisa membuat jurnal untuk dirinya sendiri
-        if ($user->role === 'guru' && $request->guru_id != $user->id) {
+        if ($user->role === 'Guru' && $request->guru_id != $user->id) {
             return redirect()->back()->with('error', 'Anda hanya dapat membuat jurnal untuk diri sendiri');
         }
         
@@ -162,8 +164,8 @@ class JurnalController extends Controller
             DB::beginTransaction();
             
             // Hitung jumlah kehadiran
-            $jumlahHadir = count($request->santri_hadir ?? []);
-            $jumlahTidakHadir = count($request->santri_tidak_hadir ?? []);
+            $jumlahHadir = count($request->siswa_hadir ?? []);
+            $jumlahTidakHadir = count($request->siswa_tidak_hadir ?? []);
             
             // Buat jurnal baru
             $jurnal = Jurnal::create([
@@ -174,8 +176,8 @@ class JurnalController extends Controller
                 'materi_pokok' => $request->materi_pokok,
                 'kegiatan_pembelajaran' => $request->kegiatan_pembelajaran,
                 'evaluasi_pembelajaran' => $request->evaluasi_pembelajaran,
-                'santri_hadir' => $request->santri_hadir,
-                'santri_tidak_hadir' => $request->santri_tidak_hadir,
+                'siswa_hadir' => $request->siswa_hadir,
+                'siswa_tidak_hadir' => $request->siswa_tidak_hadir,
                 'jumlah_hadir' => $jumlahHadir,
                 'jumlah_tidak_hadir' => $jumlahTidakHadir,
                 'catatan_khusus' => $request->catatan_khusus,
@@ -212,13 +214,13 @@ class JurnalController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk melihat jurnal ini');
         }
         
-        $jurnal->load(['guru', 'mataPelajaran', 'kelas']);
+        $jurnal->load(['guru', 'mapel', 'kelas']);
         
-        // Ambil data santri yang hadir dan tidak hadir
-        $santriHadir = $jurnal->getSantriHadirData();
-        $santriTidakHadir = $jurnal->getSantriTidakHadirData();
+        // Ambil data siswa yang hadir dan tidak hadir
+        $siswaHadir = $jurnal->getSiswaHadirData();
+        $siswaTidakHadir = $jurnal->getSiswaTidakHadirData();
         
-        return view('jurnal.show', compact('jurnal', 'santriHadir', 'santriTidakHadir'));
+        return view('jurnal.show', compact('jurnal', 'siswaHadir', 'siswaTidakHadir'));
     }
 
     /**
@@ -228,31 +230,31 @@ class JurnalController extends Controller
     {
         $user = Auth::user();
         
-        // Hanya admin dan guru pemilik yang bisa edit
-        if ($user->role === 'wali_murid' || 
-            ($user->role === 'guru' && $jurnal->guru_id !== $user->id)) {
+        // Hanya Dev dan guru pemilik yang bisa edit
+        if ($user->role === 'Siswa' || 
+            ($user->role === 'Guru' && $jurnal->guru_id !== $user->id)) {
             abort(403, 'Anda tidak memiliki akses untuk mengedit jurnal ini');
         }
         
-        // Jurnal yang sudah final tidak bisa diedit kecuali admin
-        if ($jurnal->status_jurnal === 'final' && $user->role !== 'admin') {
+        // Jurnal yang sudah final tidak bisa diedit kecuali Dev
+        if ($jurnal->status_jurnal === 'final' && $user->role !== 'Dev') {
             return redirect()->back()->with('error', 'Jurnal yang sudah final tidak dapat diedit');
         }
         
-        $jurnal->load(['guru', 'mataPelajaran', 'kelas']);
+        $jurnal->load(['guru', 'mapel', 'kelas']);
         
-        $mataPelajaran = MataPelajaran::active()->get();
-        $kelas = Kelas::active()->get();
-        $guru = User::guru()->get();
+        $mapel = Mapel::get();
+        $kelas = Kelas::get();
+        $guru = Pegawai::get();
         
-        // Ambil santri berdasarkan kelas
-        $santriKelas = User::santri()
+        // Ambil siswa berdasarkan kelas
+        $siswaKelas = Siswa::get()
                           ->whereHas('kelas', function($q) use ($jurnal) {
                               $q->where('kelas.id', $jurnal->kelas_id);
                           })
                           ->get();
         
-        return view('jurnal.edit', compact('jurnal', 'mataPelajaran', 'kelas', 'guru', 'santriKelas'));
+        return view('jurnal.edit', compact('jurnal', 'mapel', 'kelas', 'guru', 'siswaKelas'));
     }
 
     /**
@@ -263,13 +265,13 @@ class JurnalController extends Controller
         $user = Auth::user();
         
         // Validasi akses
-        if ($user->role === 'wali_murid' || 
-            ($user->role === 'guru' && $jurnal->guru_id !== $user->id)) {
+        if ($user->role === 'Siswa' || 
+            ($user->role === 'Guru' && $jurnal->guru_id !== $user->id)) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mengedit jurnal ini');
         }
         
-        // Jurnal final hanya bisa diedit oleh admin
-        if ($jurnal->status_jurnal === 'final' && $user->role !== 'admin') {
+        // Jurnal final hanya bisa diedit oleh Dev
+        if ($jurnal->status_jurnal === 'final' && $user->role !== 'Dev') {
             return redirect()->back()->with('error', 'Jurnal yang sudah final tidak dapat diedit');
         }
         
@@ -284,8 +286,8 @@ class JurnalController extends Controller
             'evaluasi_pembelajaran' => 'required|string',
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
-            'santri_hadir' => 'nullable|array',
-            'santri_tidak_hadir' => 'nullable|array',
+            'siswa_hadir' => 'nullable|array',
+            'siswa_tidak_hadir' => 'nullable|array',
             'catatan_khusus' => 'nullable|string',
             'kendala_pembelajaran' => 'nullable|string',
             'solusi_kendala' => 'nullable|string',
@@ -309,8 +311,8 @@ class JurnalController extends Controller
             DB::beginTransaction();
             
             // Hitung jumlah kehadiran
-            $jumlahHadir = count($request->santri_hadir ?? []);
-            $jumlahTidakHadir = count($request->santri_tidak_hadir ?? []);
+            $jumlahHadir = count($request->siswa_hadir ?? []);
+            $jumlahTidakHadir = count($request->siswa_tidak_hadir ?? []);
             
             // Update jurnal
             $jurnal->update([
@@ -321,8 +323,8 @@ class JurnalController extends Controller
                 'materi_pokok' => $request->materi_pokok,
                 'kegiatan_pembelajaran' => $request->kegiatan_pembelajaran,
                 'evaluasi_pembelajaran' => $request->evaluasi_pembelajaran,
-                'santri_hadir' => $request->santri_hadir,
-                'santri_tidak_hadir' => $request->santri_tidak_hadir,
+                'siswa_hadir' => $request->siswa_hadir,
+                'siswa_tidak_hadir' => $request->siswa_tidak_hadir,
                 'jumlah_hadir' => $jumlahHadir,
                 'jumlah_tidak_hadir' => $jumlahTidakHadir,
                 'catatan_khusus' => $request->catatan_khusus,
@@ -354,8 +356,8 @@ class JurnalController extends Controller
     {
         $user = Auth::user();
         
-        // Hanya admin yang bisa menghapus jurnal
-        if ($user->role !== 'admin') {
+        // Hanya Dev yang bisa menghapus jurnal
+        if ($user->role !== 'Dev') {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk menghapus jurnal');
         }
         
@@ -370,13 +372,13 @@ class JurnalController extends Controller
     }
 
     /**
-     * Get santri by kelas (AJAX)
+     * Get siswa by kelas (AJAX)
      */
-    public function getSantriByKelas(Request $request)
+    public function getSiswaByKelas(Request $request)
     {
         $kelasId = $request->kelas_id;
         
-        $santri = User::santri()
+        $siswa = Siswa::get()
                      ->whereHas('kelas', function($q) use ($kelasId) {
                          $q->where('kelas.id', $kelasId);
                      })
@@ -384,7 +386,7 @@ class JurnalController extends Controller
                      ->orderBy('name')
                      ->get();
         
-        return response()->json($santri);
+        return response()->json($siswa);
     }
 
     /**
@@ -394,14 +396,14 @@ class JurnalController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->role === 'wali_murid') {
+        if ($user->role === 'Siswa') {
             abort(403, 'Anda tidak memiliki akses untuk melihat laporan');
         }
         
         $query = Jurnal::with(['guru', 'mapel', 'kelas']);
         
         // Filter berdasarkan role
-        if ($user->role === 'guru') {
+        if ($user->role === 'Guru') {
             $query->byGuru($user->id);
         }
         
@@ -414,14 +416,14 @@ class JurnalController extends Controller
         }
         
         if ($request->filled('mata_pelajaran_id')) {
-            $query->byMataPelajaran($request->mata_pelajaran_id);
+            $query->bymapel($request->mata_pelajaran_id);
         }
         
         if ($request->filled('kelas_id')) {
             $query->byKelas($request->kelas_id);
         }
         
-        if ($request->filled('guru_id') && $user->role === 'admin') {
+        if ($request->filled('guru_id') && $user->role === 'Dev') {
             $query->byGuru($request->guru_id);
         }
         
@@ -440,11 +442,11 @@ class JurnalController extends Controller
         ];
         
         // Data untuk filter dropdown
-        $mataPelajaran = MataPelajaran::active()->get();
-        $kelas = Kelas::active()->get();
-        $guru = $user->role === 'admin' ? User::guru()->get() : collect();
+        $mapel = Mapel::get();
+        $kelas = Kelas::get();
+        $guru = $user->role === 'Dev' ? Pegawai::get() : collect();
         
-        return view('jurnal.laporan', compact('jurnal', 'stats', 'mataPelajaran', 'kelas', 'guru'));
+        return view('jurnal.laporan', compact('jurnal', 'stats', 'mapel', 'kelas', 'guru'));
     }
 
     /**
@@ -454,7 +456,7 @@ class JurnalController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->role === 'wali_murid') {
+        if ($user->role === 'Siswa') {
             abort(403, 'Anda tidak memiliki akses untuk export laporan');
         }
         
@@ -474,8 +476,8 @@ class JurnalController extends Controller
         $user = Auth::user();
         
         // Validasi akses
-        if ($user->role === 'wali_murid' || 
-            ($user->role === 'guru' && $jurnal->guru_id !== $user->id)) {
+        if ($user->role === 'Siswa' || 
+            ($user->role === 'Guru' && $jurnal->guru_id !== $user->id)) {
             return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk memfinalisasi jurnal ini');
         }
         
@@ -499,14 +501,14 @@ class JurnalController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->role === 'wali_murid') {
+        if ($user->role === 'Siswa') {
             return $this->dashboardWaliMurid();
         }
         
         $query = Jurnal::query();
         
         // Filter berdasarkan role
-        if ($user->role === 'guru') {
+        if ($user->role === 'Guru') {
             $query->byGuru($user->id);
         }
         
@@ -541,7 +543,7 @@ class JurnalController extends Controller
         ];
         
         // Jurnal terbaru
-        $jurnalTerbaru = $query->with(['guru', 'mataPelajaran', 'kelas'])
+        $jurnalTerbaru = $query->with(['guru', 'mapel', 'kelas'])
                               ->orderBy('created_at', 'desc')
                               ->limit(5)
                               ->get();
@@ -568,8 +570,8 @@ class JurnalController extends Controller
             // Query jurnal yang melibatkan anak
             $queryBase = Jurnal::where(function($q) use ($anakIds) {
                 foreach ($anakIds as $anakId) {
-                    $q->orWhereJsonContains('santri_hadir', $anakId)
-                      ->orWhereJsonContains('santri_tidak_hadir', $anakId);
+                    $q->orWhereJsonContains('siswa_hadir', $anakId)
+                      ->orWhereJsonContains('siswa_tidak_hadir', $anakId);
                 }
             });
             
@@ -589,7 +591,7 @@ class JurnalController extends Controller
             ];
             
             // Jurnal terbaru
-            $jurnalTerbaru = (clone $queryBase)->with(['guru', 'mataPelajaran', 'kelas'])
+            $jurnalTerbaru = (clone $queryBase)->with(['guru', 'mapel', 'kelas'])
                                               ->orderBy('created_at', 'desc')
                                               ->limit(5)
                                               ->get();
@@ -609,10 +611,10 @@ class JurnalController extends Controller
         
         foreach ($jurnal as $j) {
             foreach ($anakIds as $anakId) {
-                if (in_array($anakId, $j->santri_hadir ?? [])) {
+                if (in_array($anakId, $j->siswa_hadir ?? [])) {
                     $totalJurnal++;
                     $totalHadir++;
-                } elseif (array_key_exists($anakId, $j->santri_tidak_hadir ?? [])) {
+                } elseif (array_key_exists($anakId, $j->siswa_tidak_hadir ?? [])) {
                     $totalJurnal++;
                     $totalTidakHadir++;
                 }

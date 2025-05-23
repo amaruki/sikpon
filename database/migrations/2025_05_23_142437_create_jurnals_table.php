@@ -23,8 +23,8 @@ class CreateJurnalsTable extends Migration
             $table->string('materi_pokok');
             $table->text('kegiatan_pembelajaran');
             $table->text('evaluasi_pembelajaran');
-            $table->json('santri_hadir')->nullable(); // Array ID santri yang hadir
-            $table->json('santri_tidak_hadir')->nullable(); // Array ID santri yang tidak hadir dengan keterangan
+            $table->json('siswa_hadir')->nullable(); // Array ID siswa yang hadir
+            $table->json('siswa_tidak_hadir')->nullable(); // Array ID siswa yang tidak hadir dengan keterangan
             $table->integer('jumlah_hadir')->default(0);
             $table->integer('jumlah_tidak_hadir')->default(0);
             $table->text('catatan_khusus')->nullable();

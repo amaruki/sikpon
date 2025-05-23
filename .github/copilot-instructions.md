@@ -83,7 +83,7 @@ tests/            # Application tests
 
 #### A. Modul Manajemen Pengguna
 
-- **Pengelolaan Data Santri**: Biodata, riwayat pendidikan, data keluarga  
+- **Pengelolaan Data Siswa**: Biodata, riwayat pendidikan, data keluarga  
 - **Pengelolaan Data Guru**: Profil pengajar, kualifikasi, mata pelajaran yang diampu  
 - **Manajemen User**: Pengaturan akun, password, dan hak akses  
 
@@ -104,7 +104,7 @@ tests/            # Application tests
 
 - **Jurnal Pembelajaran**:
   - Laporan evaluasi mingguan  
-  - Catatan perkembangan santri  
+  - Catatan perkembangan siswa  
   - Dokumentasi kegiatan pembelajaran  
   - Progress pencapaian kurikulum  
 
@@ -134,14 +134,14 @@ tests/            # Application tests
 **Fungsi Operasional:**
 
 - Pelaksana pembelajaran langsung  
-- Evaluator perkembangan santri  
+- Evaluator perkembangan siswa  
 - Input data akademik real-time  
 
 **Batasan Akses:**
 
 - Tidak dapat menghapus data master (guru, kurikulum, jadwal)  
 - Tidak dapat mengelola user admin  
-- Fokus pada data santri dan jurnal pembelajaran  
+- Fokus pada data siswa dan jurnal pembelajaran  
 
 ---
 
@@ -164,7 +164,7 @@ tests/            # Application tests
 ## Flow Kerja Sistem
 
 1. Admin menyiapkan infrastruktur (data guru, kurikulum, jadwal)  
-2. Admin/Guru menginput data santri baru  
+2. Admin/Guru menginput data siswa baru  
 3. Guru melaksanakan pembelajaran sesuai jadwal dan kurikulum  
 4. Guru membuat jurnal evaluasi mingguan  
 5. Wali Murid memantau progress melalui sistem  

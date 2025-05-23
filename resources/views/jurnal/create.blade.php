@@ -159,16 +159,16 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="santri_hadir">Santri Hadir</label>
-                                    <select class="form-control select2 @error('santri_hadir') is-invalid @enderror" 
-                                            id="santri_hadir" name="santri_hadir[]" multiple>
-                                        @foreach($santri as $s)
-                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('santri_hadir', [])) ? 'selected' : '' }}>
+                                    <label for="siswa_hadir">Siswa Hadir</label>
+                                    <select class="form-control select2 @error('siswa_hadir') is-invalid @enderror" 
+                                            id="siswa_hadir" name="siswa_hadir[]" multiple>
+                                        @foreach($siswa as $s)
+                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('siswa_hadir', [])) ? 'selected' : '' }}>
                                                 {{ $s->nama }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('santri_hadir')
+                                    @error('siswa_hadir')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -176,16 +176,16 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="santri_tidak_hadir">Santri Tidak Hadir</label>
-                                    <select class="form-control select2 @error('santri_tidak_hadir') is-invalid @enderror" 
-                                            id="santri_tidak_hadir" name="santri_tidak_hadir[]" multiple>
-                                        @foreach($santri as $s)
-                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('santri_tidak_hadir', [])) ? 'selected' : '' }}>
+                                    <label for="siswa_tidak_hadir">Siswa Tidak Hadir</label>
+                                    <select class="form-control select2 @error('siswa_tidak_hadir') is-invalid @enderror" 
+                                            id="siswa_tidak_hadir" name="siswa_tidak_hadir[]" multiple>
+                                        @foreach($siswa as $s)
+                                            <option value="{{ $s->id }}" {{ in_array($s->id, old('siswa_tidak_hadir', [])) ? 'selected' : '' }}>
                                                 {{ $s->nama }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('santri_tidak_hadir')
+                                    @error('siswa_tidak_hadir')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
