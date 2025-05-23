@@ -13,7 +13,14 @@ class Siswa extends Model
     protected $guarded = [];
     public function nilai()
     {
-        // return $this->hasMany(Nilai::class)->orderBy('jenis', 'asc');
+        
         return $this->hasMany(Nilai::class);
+    }
+    /**
+     * Get the kelas that the siswa belongs to.
+     */
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
     }
 }

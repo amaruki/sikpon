@@ -16,8 +16,8 @@ class CreateTahunsTable extends Migration
         Schema::create('tahuns', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->nullable();
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->enum('status', ['aktif', 'tidak_aktif'])->default('tidak_aktif');
+            $table->timestamps();
         });
     }
 

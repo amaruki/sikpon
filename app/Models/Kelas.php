@@ -33,4 +33,12 @@ class Kelas extends Model
     {
         return $this->hasMany(Jadwal::class)->where('pegawai_id', \Auth::user()->pegawai_id);
     }
+
+    /**
+     * Get all siswa in this kelas.
+     */
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class);
+    }
 }

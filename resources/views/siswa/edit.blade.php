@@ -81,11 +81,6 @@
                                     </div>
                                     <div class="form-row mt-3">
                                         <div class="col-6 col-sm-6">
-                                            <label class="small mb-1" for="inputNIS">NISN</label>
-                                            <input type="number" name="nisn" id="inputNISN" class="form-control"
-                                                placeholder="Masukan NISN" value="{{ $edit->nisn }}">
-                                        </div>
-                                        <div class="col-6 col-sm-6">
                                             <label class="small mb-1" for="inputHP">No. Hp</label>
                                             <input type="number" name="hp" id="inputHP" class="form-control"
                                                 placeholder="Masukan Nomor HP" value="{{ $edit->hp }}">

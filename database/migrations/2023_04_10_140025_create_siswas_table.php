@@ -17,6 +17,7 @@ class CreateSiswasTable extends Migration
             $table->id();
             $table->string('uuid', 36);
             $table->string('nama')->nullable();
+            $table->string('nisn')->nullable();
             $table->string('jk')->nullable();
             $table->string('tempat')->nullable();
             $table->string('ttl')->nullable();
@@ -27,7 +28,7 @@ class CreateSiswasTable extends Migration
             $table->string('alamat')->nullable();
             $table->string('kec')->nullable();
             $table->string('kel')->nullable();
-            $table->string('nis')->nullable();
+            $table->string('kelas_id')->nullable();
             $table->string('hp')->nullable();
             $table->timestamp('created_at');
             $table->timestamp('updated_at');

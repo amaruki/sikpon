@@ -79,7 +79,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            @if (auth()->user()->role === 'admin')
+                                            @if (auth()->user()->role === 'Dev')
                                                 <div class="col-md-2">
                                                     <label>Guru</label>
                                                     <select name="guru_id" class="form-control select2">
@@ -140,8 +140,8 @@
                                                         <td>{{ $jurnal->firstItem() + $index }}</td>
                                                         <td>{{ $j->tanggal->format('d/m/Y') }}</td>
                                                         <td>{{ $j->kode_jurnal }}</td>
-                                                        <td>{{ $j->guru->name }}</td>
-                                                        <td>{{ $j->mataPelajaran->nama }}</td>
+                                                        <td>{{ $j->guru->nama }}</td>
+                                                        <td>{{ $j->mapel->nama }}</td>
                                                         <td>{{ $j->kelas->nama }}</td>
                                                         <td>{{ $j->materi_pokok }}</td>
                                                         <td>
@@ -155,8 +155,8 @@
                                                                 class="btn btn-info btn-sm">
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
-                                                            @if (in_array(auth()->user()->role, ['admin', 'guru']) &&
-                                                                    (auth()->user()->role === 'admin' || auth()->id() === $j->guru_id))
+                                                            @if (in_array(auth()->user()->role, ['Dev', 'Guru']) &&
+                                                                    (auth()->user()->role === 'Dev' || auth()->id() === $j->guru_id))
                                                                 <a href="{{ route('jurnal.edit', $j->id) }}"
                                                                     class="btn btn-warning btn-sm">
                                                                     <i class="fas fa-edit"></i>

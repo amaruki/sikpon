@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Migrations\Migration;   
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -17,7 +17,7 @@ class CreateJurnalsTable extends Migration
             $table->id();
             $table->string('kode_jurnal')->unique();
             $table->date('tanggal');
-            $table->foreignId('guru_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('guru_id')->constrained('pegawais')->onDelete('restrict');
             $table->foreignId('mapel_id')->constrained('mapels')->onDelete('cascade');
             $table->foreignId('kelas_id')->constrained('kelases')->onDelete('cascade');
             $table->string('materi_pokok');
@@ -51,6 +51,11 @@ class CreateJurnalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jurnals');
+        Schema::table('jurnal', function (Blueprint $table) {
+            $table->dropForeign(['guru_id']);
+            $table->dropForeign(['mapel_id']);
+            $table->dropForeign(['kelas_id']);
+        });
+        Schema::dropIfExists('jurnal');
     }
 }
