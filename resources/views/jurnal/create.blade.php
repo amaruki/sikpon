@@ -32,11 +32,13 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Tambah Jurnal Pembelajaran</h3>
-                                    <div class="card-tools">
-                                        <a href="{{ route('jurnal.index') }}" class="btn btn-secondary">
-                                            <i class="fas fa-arrow-left"></i> Kembali
-                                        </a>
+                                    <h4 class="card-title">Tambah Jurnal Pembelajaran</h4>
+                                    <div class="card-header-action">
+                                        <div class="btn-group">
+                                            <a href="{{ route('jurnal.index') }}" class="btn btn-light btn-icon">
+                                                <i class="fas fa-arrow-left"></i> Kembali
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -326,13 +328,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> Simpan
-                                        </button>
-                                        <a href="{{ route('jurnal.index') }}" class="btn btn-secondary">
-                                            <i class="fas fa-times"></i> Batal
-                                        </a>
+                                    <div class="card-footer text-right">
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-primary btn-icon">
+                                                <i class="fas fa-save"></i> Simpan
+                                            </button>
+                                            <a href="{{ route('jurnal.index') }}" class="btn btn-light btn-icon">
+                                                <i class="fas fa-times"></i> Batal
+                                            </a>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -347,6 +351,17 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <style>
+        .select2-container--bootstrap4 .select2-selection--single {
+            height: calc(2.25rem + 2px) !important;
+        }
+        .select2-container--bootstrap4 .select2-selection--multiple {
+            min-height: calc(2.25rem + 2px) !important;
+        }
+        .form-control.is-invalid + .select2-container--bootstrap4 .select2-selection {
+            border-color: #dc3545;
+        }
+    </style>
 @endpush
 
 @push('scripts')

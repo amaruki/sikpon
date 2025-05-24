@@ -17,10 +17,9 @@ class CreateKelasesTable extends Migration
             $table->id();
             $table->string('kelas');
             $table->string('nama');
-            $table->string('pegawai_id');
-            $table->string('tahun_id');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->foreignId('pegawai_id')->constrained('pegawais')->onDelete('restrict');
+            $table->foreignId('tahun_id')->constrained('tahuns')->onDelete('restrict');
+            $table->timestamps();
         });
     }
 

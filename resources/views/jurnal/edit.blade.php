@@ -32,11 +32,13 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Edit Jurnal Pembelajaran</h3>
-                                    <div class="card-tools">
-                                        <a href="{{ route('jurnal.index') }}" class="btn btn-secondary">
-                                            <i class="fas fa-arrow-left"></i> Kembali
-                                        </a>
+                                    <h4 class="card-title">Edit Jurnal Pembelajaran</h4>
+                                    <div class="card-header-action">
+                                        <div class="btn-group">
+                                            <a href="{{ route('jurnal.index') }}" class="btn btn-light btn-icon">
+                                                <i class="fas fa-arrow-left"></i> Kembali
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -331,13 +333,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> Simpan Perubahan
-                                        </button>
-                                        <a href="{{ route('jurnal.index') }}" class="btn btn-secondary">
-                                            <i class="fas fa-times"></i> Batal
-                                        </a>
+                                    <div class="card-footer text-right">
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-primary btn-icon">
+                                                <i class="fas fa-save"></i> Simpan Perubahan
+                                            </button>
+                                            <a href="{{ route('jurnal.index') }}" class="btn btn-light btn-icon">
+                                                <i class="fas fa-times"></i> Batal
+                                            </a>
+                                        </div>
                                     </div>
                                 </form>
                             </div>

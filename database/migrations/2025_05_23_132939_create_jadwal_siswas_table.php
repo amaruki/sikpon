@@ -15,14 +15,13 @@ class CreateJadwalSiswasTable extends Migration
     {
         Schema::create('jadwal_siswas', function (Blueprint $table) {
             $table->id();
-            $table->integer('pegawai_id');
-            $table->integer('jadwal_id');
-            $table->integer('siswa_id');
-            $table->integer('tahun_id');
-            $table->integer('kelas_id');
-            $table->integer('mapel_id');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->foreignId('pegawai_id')->constrained('pegawais')->onDelete('restrict');
+            $table->foreignId('jadwal_id')->constrained('jadwals')->onDelete('cascade');
+            $table->foreignId('siswa_id')->constrained('siswas')->onDelete('cascade');
+            $table->foreignId('tahun_id')->constrained('tahuns')->onDelete('restrict');
+            $table->foreignId('kelas_id')->constrained('kelases')->onDelete('restrict');
+            $table->foreignId('mapel_id')->constrained('mapels')->onDelete('restrict');
+            $table->timestamps();
         });
     }
 

@@ -58,7 +58,7 @@
         <div class="container">
             <div class="row d-flex align-items-center">
                 <div class=" col-lg-6 py-5 py-lg-0 order-2 order-lg-1" data-aos="fade-right">
-                    <h1>SIAKAD</h1>
+                    <h1>SIKPON</h1>
                     <a href="{{ url('login', []) }}" class="btn-get-started scrollto">Login</a>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
@@ -76,7 +76,7 @@
             <div class="container">
 
                 <div class="section-title">
-                    <h2 data-aos="fade-in">Informasi Akademik</h2>
+                    <h2 data-aos="fade-in">Informasi</h2>
                 </div>
 
                 <div class="row">

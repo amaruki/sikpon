@@ -15,14 +15,13 @@ class CreateJadwalsTable extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
-            $table->integer('hari_id');
-            $table->integer('kelas_id');
-            $table->integer('mapel_id');
+            $table->foreignId('hari_id')->constrained('haris')->onDelete('restrict');
+            $table->foreignId('kelas_id')->constrained('kelases')->onDelete('restrict');
+            $table->foreignId('mapel_id')->constrained('mapels')->onDelete('restrict');
             $table->string('jam');
-            $table->integer('pegawai_id');
-            $table->integer('tahun_id');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->foreignId('pegawai_id')->constrained('pegawais')->onDelete('restrict');
+            $table->foreignId('tahun_id')->constrained('tahuns')->onDelete('restrict');
+            $table->timestamps();
         });
     }
 
