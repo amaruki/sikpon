@@ -277,11 +277,12 @@ class JurnalController extends Controller
         $guru = Pegawai::get();
 
         // Ambil siswa berdasarkan kelas
-        $siswaKelas = Siswa::get()
-            ->whereHas('kelas', function ($q) use ($jurnal) {
-                $q->where('kelas.id', $jurnal->kelas_id);
-            })
-            ->get();
+        $siswaKelas = Siswa::whereHas('kelas', function ($q) use ($jurnal) {
+            $q->where('id', $jurnal->kelas_id);
+        })
+        ->select('id', 'nama', 'nisn')
+        ->orderBy('nama')
+        ->get();
 
         return view('jurnal.edit', compact('jurnal', 'mapel', 'kelas', 'guru', 'siswaKelas'));
     }
@@ -412,13 +413,12 @@ class JurnalController extends Controller
     {
         $kelasId = $request->kelas_id;
 
-        $siswa = Siswa::get()
-            ->whereHas('kelas', function ($q) use ($kelasId) {
-                $q->where('kelas.id', $kelasId);
-            })
-            ->select('id', 'name', 'nis')
-            ->orderBy('name')
-            ->get();
+        $siswa = Siswa::whereHas('kelas', function ($q) use ($kelasId) {
+            $q->where('id', $kelasId);
+        })
+        ->select('id', 'nama', 'nisn')
+        ->orderBy('nama')
+        ->get();
 
         return response()->json($siswa);
     }
@@ -494,10 +494,10 @@ class JurnalController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk export laporan');
         }
 
-        $jurnal = Jurnal::all();  // Ambil data dari database
+        $jurnals = Jurnal::get();
 
-        $pdf = Pdf::loadView('jurnals.pdf', compact('jurnal'))
-            ->setPaper('A4', 'portrait');  // Atur ukuran dan orientasi
+        $pdf = Pdf::loadView('jurnal.pdf', compact('jurnals'))
+            ->setPaper('A4', 'landscape');  // Atur ukuran dan orientasi
 
         return $pdf->download('Laporan Jurnal.pdf');
     }

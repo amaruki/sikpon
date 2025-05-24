@@ -157,7 +157,7 @@ Route::group(['middleware' => ['auth', 'HakRole:Guru,Dev,Siswa']], function () {
         Route::get('/{jurnal}/edit', [App\Http\Controllers\JurnalController::class, 'edit'])->name('jurnal.edit');
         Route::put('/{jurnal}', [App\Http\Controllers\JurnalController::class, 'update'])->name('jurnal.update');
         Route::delete('/{jurnal}', [App\Http\Controllers\JurnalController::class, 'destroy'])->name('jurnal.destroy');
-        Route::get('jurnal/{id}/pdf', [JurnalController::class, 'exportPdf'])->name('jurnal.pdf');
+        Route::get('jurnal/{id}/pdf', [App\Http\Controllers\JurnalController::class, 'exportLaporan'])->name('jurnal.pdf');
     });
 
 });
