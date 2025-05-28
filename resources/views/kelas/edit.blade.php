@@ -48,26 +48,20 @@
                                                 <option value="3" @if ($edit->kelas == '3') selected @endif>
                                                     3
                                                 </option>
-                                                <option value="4" @if ($edit->kelas == '4') selected @endif>
-                                                    4
-                                                </option>
-                                                <option value="5" @if ($edit->kelas == '5') selected @endif>
-                                                    5
-                                                </option>
-                                                <option value="6" @if ($edit->kelas == '6') selected @endif>
-                                                    6
-                                                </option>
                                             </select>
                                         </div>
                                         <div class="col-4 col-sm-4">
                                             <label>Nama</label>
                                             <select name="nama" class="form-control">
                                                 <option value="" selected disabled>-- Pilih --</option>
-                                                <option value="A" @if ($edit->nama == 'A') selected @endif>
-                                                    A
+                                                <option value="pra-tpq" @if ($edit->nama == 'pra-tpq') selected @endif>
+                                                    Pra-TPQ
                                                 </option>
-                                                <option value="B" @if ($edit->nama == 'B') selected @endif>
-                                                    B
+                                                <option value="tpq" @if ($edit->nama == 'tpq') selected @endif>
+                                                    TPQ
+                                                </option>
+                                                <option value="madin" @if ($edit->nama == 'madin') selected @endif>
+                                                    Madin
                                                 </option>
                                             </select>
                                         </div>

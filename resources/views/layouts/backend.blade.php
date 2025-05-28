@@ -232,11 +232,6 @@
                                             <i class="fas fa-book-open"></i> <span>Jurnal Pembelajaran</span>
                                         </a>
                                     </li>
-                                    <li class="@if (Request::segment(1) == 'nilai') dropdown active @endif">
-                                        <a class="nav-link" href="{{ url('nilai', []) }}">
-                                            <i class="fas fa-percent"></i> <span>Nilai</span>
-                                        </a>
-                                    </li>
                                     <li class="@if (Request::segment(1) == 'kurikulum') dropdown active @endif">
                                         <a href="{{ url('kurikulum', []) }}"><i class="fas fa-book"></i>
                                             <span>Kurikulum</span></a>
@@ -285,11 +280,6 @@
                                     <li class="@if (Request::segment(1) == 'jurnal') dropdown active @endif">
                                         <a class="nav-link" href="{{ route('jurnal.index') }}">
                                             <i class="fas fa-book-open"></i> <span>Jurnal Pembelajaran</span>
-                                        </a>
-                                    </li>
-                                    <li class="@if (Request::segment(1) == 'nilai/saya') dropdown active @endif">
-                                        <a class="nav-link" href="{{ url('nilai/saya', []) }}">
-                                            <i class="fas fa-percent"></i> <span>Nilai</span>
                                         </a>
                                     </li>
                                     <li class="@if (Request::segment(1) == 'kurikulum') dropdown active @endif">

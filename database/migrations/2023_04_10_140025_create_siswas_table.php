@@ -30,8 +30,9 @@ class CreateSiswasTable extends Migration
             $table->string('kel')->nullable();
             $table->string('kelas_id')->nullable();
             $table->string('hp')->nullable();
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
+            // $table->timestamp('created_at');
+            // $table->timestamp('updated_at');
         });
     }
 

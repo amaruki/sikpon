@@ -61,7 +61,7 @@
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td>{{ $item->kelas }}</td>
-                                                            <td>{{ $item->nama }}</td>
+                                                            <td>{{ strtoupper($item->nama) }}</td>
                                                             <td>{{ $item->pegawai->nama ?? '' }}</td>
                                                             <td>{{ $item->tahun->nama ?? '' }}</td>
                                                             <td nowrap align="center">
@@ -113,17 +113,15 @@
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
                                 </select>
                             </div>
                             <div class="col-4 col-sm-4">
                                 <label>Nama</label>
                                 <select name="nama" class="form-control">
                                     <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
+                                    <option value="pra-tpq">Pra-TPQ</option>
+                                    <option value="tpq">TPQ</option>
+                                    <option value="madin">Madin</option>
                                 </select>
                             </div>
                         </div>
@@ -132,7 +130,7 @@
                                 <label>Wali Kelas</label>
                                 <select name="pegawai_id" class="form-control">
                                     <option value="">-- Pilih --</option>
-                                    @foreach ($wali as $wl)
+                                    @foreach ($guru as $wl)
                                         <option value="{{ $wl->id }}">
                                             {{ $wl->nama }}
                                         </option>

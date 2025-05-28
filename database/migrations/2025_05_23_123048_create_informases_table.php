@@ -17,8 +17,9 @@ class CreateInformasesTable extends Migration
             $table->id();
             $table->string('foto');
             $table->string('isi');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
+            // $table->timestamp('created_at');
+            // $table->timestamp('updated_at');
         });
     }
 

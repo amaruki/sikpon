@@ -56,14 +56,29 @@
                                                     @foreach ($asiswa as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $item->siswa->nama ?? '' }}</td>
+                                                            <td>{{ $item->siswa->nama }}</td>
                                                             <th>{{ $item->username }}</th>
                                                             <td nowrap align="center">
-                                                                <a href="/user/delete/{{ $item->uuid }}/"
-                                                                    class="btn btn-danger btn-sm"
-                                                                    onclick="return confirm('Anda yakin ingin menghapus ?')">
-                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                <!-- Tombol Edit -->
+                                                                <a href="{{ route('user.siswa.edit', $item->id) }}" 
+                                                                   class="btn btn-warning btn-sm" 
+                                                                   title="Edit User Siswa">
+                                                                    <i class="fa fa-edit" aria-hidden="true"></i>
                                                                 </a>
+                                                                
+                                                                <!-- Tombol Hapus -->
+                                                                <form action="{{ route('user.siswa.delete', $item->id) }}" 
+                                                                      method="POST" 
+                                                                      style="display: inline-block;"
+                                                                      onsubmit="return confirm('Anda yakin ingin menghapus user siswa {{ $item->siswa->nama }}?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" 
+                                                                            class="btn btn-danger btn-sm" 
+                                                                            title="Hapus User Siswa">
+                                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </form>
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -101,8 +116,8 @@
                                 <label class="small mb-1" for="inputEmailAddress">Nama</label>
                                 <select name="siswa_id" class="form-control" required="">
                                     <option value="" selected disabled>-- Pilih -- </option>
-                                    @foreach ($siswa as $sw)
-                                        <option value="{{ $sw->id }}">{{ $sw->nama }}
+                                    @foreach ($siswa as $s)
+                                        <option value="{{ $s->id }}">{{ $s->nama }}
                                         </option>
                                     @endforeach
                                 </select>

@@ -116,7 +116,8 @@
                                                         <button type="submit" class="btn btn-primary btn-icon">
                                                             <i class="fas fa-search"></i> Filter
                                                         </button>
-                                                        <a href="{{ route('jurnal.index') }}" class="btn btn-light btn-icon">
+                                                        <a href="{{ route('jurnal.index') }}"
+                                                            class="btn btn-light btn-icon">
                                                             <i class="fas fa-redo"></i> Reset
                                                         </a>
                                                     </div>
@@ -152,7 +153,8 @@
                                                         <td>{{ $j->kelas->nama }}</td>
                                                         <td>{{ \Str::limit($j->materi_pokok, 50) }}</td>
                                                         <td class="text-center">
-                                                            <span class="badge badge-{{ $j->status_jurnal === 'final' ? 'success' : 'warning' }}">
+                                                            <span
+                                                                class="badge badge-{{ $j->status_jurnal === 'final' ? 'success' : 'warning' }}">
                                                                 {{ $j->status_jurnal === 'final' ? 'Final' : 'Draft' }}
                                                             </span>
                                                         </td>
@@ -162,22 +164,35 @@
                                                                     class="btn btn-info btn-sm" title="Lihat Detail">
                                                                     <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                @if (in_array(auth()->user()->role, ['Dev', 'Guru']) &&
-                                                                        (auth()->user()->role === 'Dev' || auth()->id() === $j->guru_id))
+
+                                                                @php
+                                                                    $canEdit = false;
+                                                                    if (auth()->user()->role === 'Dev') {
+                                                                        $canEdit = true;
+                                                                    } elseif (auth()->user()->role === 'Guru') {
+                                                                        // Cek apakah guru ini yang membuat jurnal
+                                                                        $canEdit =
+                                                                            auth()->user()->pegawai_id === $j->guru_id;
+                                                                    }
+                                                                @endphp
+
+                                                                @if ($canEdit)
                                                                     <a href="{{ route('jurnal.edit', $j->id) }}"
                                                                         class="btn btn-warning btn-sm" title="Edit">
                                                                         <i class="fas fa-edit"></i>
                                                                     </a>
-                                                                <form action="{{ route('jurnal.destroy', $j->id) }}"
-                                                                    method="POST" class="d-inline"
-                                                                    onsubmit="return confirm('Yakin ingin menghapus?')">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                                        <i class="fas fa-trash"></i>
-                                                                    </button>
-                                                                </form>
-                                                            @endif
+                                                                    <form action="{{ route('jurnal.destroy', $j->id) }}"
+                                                                        method="POST" class="d-inline"
+                                                                        onsubmit="return confirm('Yakin ingin menghapus?')">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                                            title="Hapus">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -207,6 +222,7 @@
         .select2-container--bootstrap4 .select2-selection--single {
             height: calc(2.25rem + 2px) !important;
         }
+
         .select2-container--bootstrap4 .select2-selection--multiple {
             min-height: calc(2.25rem + 2px) !important;
         }

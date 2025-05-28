@@ -139,66 +139,50 @@ class Jurnal extends Model
         };
     }
 
-    /**
-     * Get siswa hadir data
-     */
     public function getSiswaHadirData()
     {
-        if (empty($this->siswa_hadir)) {
+        if (!$this->siswa_hadir) {
             return collect();
         }
+        
         return Siswa::whereIn('id', $this->siswa_hadir)->get();
     }
-
+    
     /**
-     * Get siswa tidak hadir data
+     * Ambil data siswa yang tidak hadir
      */
     public function getSiswaTidakHadirData()
     {
-        if (empty($this->siswa_tidak_hadir)) {
+        if (!$this->siswa_tidak_hadir) {
             return collect();
         }
+        
         return Siswa::whereIn('id', $this->siswa_tidak_hadir)->get();
     }
-
-    /**
-     * Scope untuk filter berdasarkan guru
-     */
-    public function scopeByGuru($query, $guruId)
+    
+    public function scopeByDateRange($query, $startDate, $endDate)
     {
-        return $query->where('guru_id', $guruId);
+        return $query->whereBetween('tanggal', [$startDate, $endDate]);
     }
 
-    /**
-     * Scope untuk filter berdasarkan mapel
-     */
     public function scopeByMapel($query, $mapelId)
     {
         return $query->where('mapel_id', $mapelId);
     }
 
-    /**
-     * Scope untuk filter berdasarkan kelas
-     */
     public function scopeByKelas($query, $kelasId)
     {
         return $query->where('kelas_id', $kelasId);
     }
 
-    /**
-     * Scope untuk filter berdasarkan range tanggal
-     */
-    public function scopeByDateRange($query, $start, $end)
-    {
-        return $query->whereBetween('tanggal', [$start, $end]);
-    }
-
-    /**
-     * Scope untuk filter berdasarkan status
-     */
     public function scopeByStatus($query, $status)
     {
         return $query->where('status_jurnal', $status);
+    }
+
+    public function scopeByGuru($query, $guruId)
+    {
+        return $query->where('guru_id', $guruId);
     }
 
     /**
@@ -206,25 +190,20 @@ class Jurnal extends Model
      */
     public function canBeAccessedBy($user)
     {
-        if ($user->role === 'admin') {
-            return true;
+        switch ($user->role) {
+            case 'Dev':
+                return true;
+                
+            case 'Guru':
+                $pegawai = $user->pegawai;
+                return $pegawai && $this->guru_id === $pegawai->id;
+                
+            case 'Siswa':
+                $siswa = $user->siswa;
+                return $siswa && $this->kelas_id === $siswa->kelas_id;
+                
+            default:
+                return false;
         }
-        
-        if ($user->role === 'guru') {
-            return $this->guru_id === $user->id;
-        }
-        
-        if ($user->role === 'wali_murid') {
-            // Wali murid hanya bisa akses jurnal anak mereka
-            $anakIds = $user->anak()->pluck('id')->toArray();
-            $siswaDiJurnal = array_merge(
-                $this->siswa_hadir ?? [],
-                array_keys($this->siswa_tidak_hadir ?? [])
-            );
-            
-            return !empty(array_intersect($anakIds, $siswaDiJurnal));
-        }
-        
-        return false;
     }
 }

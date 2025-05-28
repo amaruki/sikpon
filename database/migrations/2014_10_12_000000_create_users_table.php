@@ -25,8 +25,7 @@ class CreateUsersTable extends Migration
             $table->integer('pegawai_id')->nullable();
             $table->integer('siswa_id')->nullable();
             $table->rememberToken()->nullable();
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
         });
     }
 

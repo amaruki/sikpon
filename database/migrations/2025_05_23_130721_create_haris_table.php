@@ -16,8 +16,9 @@ class CreateHarisTable extends Migration
         Schema::create('haris', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->nullable();
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
+            // $table->timestamp('created_at');
+            // $table->timestamp('updated_at');
         });
     }
 

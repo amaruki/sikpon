@@ -82,15 +82,16 @@
                                                         <option value="">Pilih Guru</option>
                                                         @foreach ($guru as $g)
                                                             <option value="{{ $g->id }}"
-                                                                {{ old('guru_id', $jurnal->guru_id) == $g->id ? 'selected' : '' }}>
+                                                                {{ auth()->user()->role === 'Guru' && isset($pegawai) && $pegawai->id == $g->id ? 'selected' : '' }}>
                                                                 {{ $g->nama }}
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                    @if (auth()->user()->role === 'Guru')
-                                                        <input type="hidden" name="guru_id"
-                                                            value="{{ $jurnal->guru_id }}">
+
+                                                    @if (auth()->user()->role === 'Guru' && isset($pegawai))
+                                                        <input type="hidden" name="guru_id" value="{{ $pegawai->id }}">
                                                     @endif
+
                                                     @error('guru_id')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror

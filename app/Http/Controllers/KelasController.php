@@ -12,9 +12,10 @@ class KelasController extends Controller
     public function index()
     {
         $wali = Pegawai::get();
+        $guru = Pegawai::where('jabatan','Guru')->get();
         $tahun = Tahun::get();
         $kls = Kelas::orderBy('kelas', 'asc')->get();
-        return view('kelas.index', compact('kls', 'wali', 'tahun'));
+        return view('kelas.index', compact('kls', 'wali', 'tahun', 'guru'));
     }
     public function store(Request $request)
     {
@@ -38,7 +39,7 @@ class KelasController extends Controller
 
     public function edit($id)
     {
-        $wali = Pegawai::get();
+        $wali = Pegawai::where('jabatan','Guru')->get();
         $tahun = Tahun::get();
         $edit = Kelas::where('id', $id)->firstOrFail();
         return view('kelas.edit', compact('edit', 'wali', 'tahun'));

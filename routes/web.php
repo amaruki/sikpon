@@ -1,17 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KurikulumController;
+use Illuminate\Support\Facades\Route;
+
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+ * |--------------------------------------------------------------------------
+ * | Web Routes
+ * |--------------------------------------------------------------------------
+ * |
+ * | Here is where you can register web routes for your application. These
+ * | routes are loaded by the RouteServiceProvider within a group which
+ * | contains the "web" middleware group. Now create something great!
+ * |
+ */
 
 Route::get('/', function () {
     $info = \App\Models\Informasis::get();
@@ -50,8 +51,6 @@ Route::group(['middleware' => ['auth', 'HakRole:Dev']], function () {
         Route::post('/update/{id}/', [App\Http\Controllers\TahunController::class, 'update']);
         Route::get('/delete/{id}', [App\Http\Controllers\TahunController::class, 'delete']);
     });
- 
-
 
     Route::group(['prefix' => 'kurikulum', 'middleware' => ['auth']], function () {
         Route::get('/', [KurikulumController::class, 'index'])->name('kurikulum.index');
@@ -59,26 +58,29 @@ Route::group(['middleware' => ['auth', 'HakRole:Dev']], function () {
         Route::post('/store', [KurikulumController::class, 'store'])->name('kurikulum.store');
         Route::get('/edit/{id}', [KurikulumController::class, 'edit'])->name('kurikulum.edit');
         Route::put('/update/{id}', [KurikulumController::class, 'update'])->name('kurikulum.update');
-        Route::delete('/delete/{id}', [KurikulumController::class, 'delete'])->name('kurikulum.delete'); 
+        Route::delete('/delete/{id}', [KurikulumController::class, 'delete'])->name('kurikulum.delete');
         Route::get('/export-pdf', [KurikulumController::class, 'exportPDF'])->name('kurikulum.export-pdf');
         Route::get('/kurikulum/export-pdf/{id}', [KurikulumController::class, 'exportPDFById'])->name('kurikulum.export-pdf.id');
 
-// Perbaiki nama method
+        // Perbaiki nama method
     });
-    
-    
-    
+
     Route::group(['prefix' => 'informasi'], function () {
         Route::get('/', [App\Http\Controllers\InformasiController::class, 'index']);
         Route::post('/store', [App\Http\Controllers\InformasiController::class, 'store']);
         Route::get('/edit/{id}', [App\Http\Controllers\InformasiController::class, 'edit']);
         Route::post('/update/{id}/', [App\Http\Controllers\InformasiController::class, 'update']);
         Route::get('/delete/{id}', [App\Http\Controllers\InformasiController::class, 'delete']);
-   
     });
     Route::group(['prefix' => 'user'], function () {
-        Route::get('/guru', [App\Http\Controllers\UserController::class, 'guru']);
-        Route::get('/siswa', [App\Http\Controllers\UserController::class, 'siswa']);
+        Route::get('/guru', [App\Http\Controllers\UserController::class, 'guru'])->name('user.guru');
+        Route::get('/guru/edit/{id}', [App\Http\Controllers\UserController::class, 'edit_guru'])->name('user.guru.edit');
+        Route::put('/guru/update/{id}', [App\Http\Controllers\UserController::class, 'update_guru'])->name('user.guru.update');
+        Route::put('/guru/delete/{id}', [App\Http\Controllers\UserController::class, 'delete_guru'])->name('user.guru.delete');
+        Route::get('/siswa', [App\Http\Controllers\UserController::class, 'siswa'])->name('user.siswa');
+        Route::get('/siswa/edit/{id}', [App\Http\Controllers\UserController::class, 'edit_siswa'])->name('user.siswa.edit');
+        Route::put('/siswa/update/{id}', [App\Http\Controllers\UserController::class, 'update_siswa'])->name('user.siswa.update');
+        Route::put('/siswa/delete/{id}', [App\Http\Controllers\UserController::class, 'delete_siswa'])->name('user.siswa.delete');
         Route::post('/store/guru', [App\Http\Controllers\UserController::class, 'store_guru']);
         Route::post('/store/siswa', [App\Http\Controllers\UserController::class, 'store_siswa']);
         Route::get('/edit/{id}', [App\Http\Controllers\UserController::class, 'edit']);
@@ -145,7 +147,7 @@ Route::group(['middleware' => ['auth', 'HakRole:Guru,Dev,Siswa']], function () {
         Route::post('/store', [KurikulumController::class, 'store'])->name('kurikulum.store');
         Route::get('/edit/{id}', [KurikulumController::class, 'edit'])->name('kurikulum.edit');
         Route::put('/update/{id}', [KurikulumController::class, 'update'])->name('kurikulum.update');
-        Route::delete('/delete/{id}', [KurikulumController::class, 'delete'])->name('kurikulum.delete'); 
+        Route::delete('/delete/{id}', [KurikulumController::class, 'delete'])->name('kurikulum.delete');
         Route::get('/export-pdf', [KurikulumController::class, 'exportPDF'])->name('kurikulum.export-pdf');
         Route::get('/kurikulum/export-pdf/{id}', [KurikulumController::class, 'exportPDFById'])->name('kurikulum.export-pdf.id');
     });
@@ -159,5 +161,4 @@ Route::group(['middleware' => ['auth', 'HakRole:Guru,Dev,Siswa']], function () {
         Route::delete('/{jurnal}', [App\Http\Controllers\JurnalController::class, 'destroy'])->name('jurnal.destroy');
         Route::get('jurnal/{id}/pdf', [App\Http\Controllers\JurnalController::class, 'exportLaporan'])->name('jurnal.pdf');
     });
-
 });

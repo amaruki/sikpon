@@ -61,14 +61,26 @@
                                                             <td>{{ $item->pegawai->nama }}</td>
                                                             <th>{{ $item->username }}</th>
                                                             <td nowrap align="center">
-                                                                <a href="/user/edit/{{ $item->uuid }}" class="btn btn-warning btn-sm">
+                                                                <!-- Tombol Edit -->
+                                                                <a href="{{ route('user.guru.edit', $item->id) }}" 
+                                                                   class="btn btn-warning btn-sm" 
+                                                                   title="Edit User Guru">
                                                                     <i class="fa fa-edit" aria-hidden="true"></i>
                                                                 </a>
-                                                                <a href="/user/delete/{{ $item->uuid }}/"
-                                                                    class="btn btn-danger btn-sm"
-                                                                    onclick="return confirm('Anda yakin ingin menghapus ?')">
-                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                                </a>
+                                                                
+                                                                <!-- Tombol Hapus -->
+                                                                <form action="{{ route('user.guru.delete', $item->id) }}" 
+                                                                      method="POST" 
+                                                                      style="display: inline-block;"
+                                                                      onsubmit="return confirm('Anda yakin ingin menghapus user guru {{ $item->pegawai->nama }}?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" 
+                                                                            class="btn btn-danger btn-sm" 
+                                                                            title="Hapus User Guru">
+                                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </form>
                                                             </td>
                                                         </tr>
                                                     @endforeach

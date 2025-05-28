@@ -17,8 +17,9 @@ class CreateMapelsTable extends Migration
             $table->id();
             $table->string('uuid', 36);
             $table->string('nama');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
+            // $table->timestamp('created_at');
+            // $table->timestamp('updated_at');
         });
     }
     /**
