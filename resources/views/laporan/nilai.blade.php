@@ -32,7 +32,7 @@
             </td>
 
             <td class="auto-style1" rowspan="3" width="101">
-                <img alt="" height="100" src="{{ asset('update') }}/sd.jpg" width="100">
+                <img alt="" height="100" src="{{ asset('update') }}/sd.png" width="100">
             </td>
         </tr>
         <tr>
