@@ -13,7 +13,7 @@ class JadwalSeeder extends Seeder
             [
                 'id' => 13,
                 'kelas_id' => 31,
-                'mapel_id' => 148,
+                'mapel_id' => 1,
                 'tahun_id' => 1,
                 'pegawai_id' => 9,
                 'hari_id' => 7,
@@ -24,7 +24,7 @@ class JadwalSeeder extends Seeder
             [
                 'id' => 14,
                 'kelas_id' => 31,
-                'mapel_id' => 149,
+                'mapel_id' => 2,
                 'tahun_id' => 1,
                 'pegawai_id' => 9,
                 'hari_id' => 1,
@@ -35,7 +35,7 @@ class JadwalSeeder extends Seeder
             [
                 'id' => 16,
                 'kelas_id' => 31,
-                'mapel_id' => 154,
+                'mapel_id' => 3,
                 'tahun_id' => 1,
                 'pegawai_id' => 9,
                 'hari_id' => 1,
